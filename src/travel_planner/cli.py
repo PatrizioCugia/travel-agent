@@ -79,6 +79,54 @@ def doctor() -> None:
 
 
 @app.command()
+def parse(slug: str) -> None:
+    """Parse a trip's markdown (trip.md + places.yaml) into the DB.
+
+    The trip directory must be `trips/<slug>/` under the repo root and the
+    frontmatter's `trip_id` must match `<slug>`.
+    """
+    from pydantic import ValidationError
+
+    from travel_planner.db.sync import sync_trip
+    from travel_planner.parser.places import load_places
+    from travel_planner.parser.trip import load_trip_frontmatter
+
+    trip_dir = _repo_root() / "trips" / slug
+    if not trip_dir.is_dir():
+        typer.secho(f"Trip directory not found: {trip_dir}", fg=typer.colors.RED)
+        raise typer.Exit(1)
+
+    try:
+        trip = load_trip_frontmatter(trip_dir / "trip.md")
+        places = load_places(trip_dir / "places.yaml")
+    except (FileNotFoundError, ValueError, ValidationError) as e:
+        typer.secho(f"Parse error: {e}", fg=typer.colors.RED)
+        raise typer.Exit(1) from e
+
+    if trip.trip_id != slug:
+        typer.secho(
+            f"trip_id mismatch: frontmatter has {trip.trip_id!r}, directory is {slug!r}",
+            fg=typer.colors.RED,
+        )
+        raise typer.Exit(1)
+
+    with sqlite3.connect(_db_path()) as conn:
+        sync_trip(conn, trip, places)
+
+    missing = sum(1 for p in places if not (p.lat and p.lng and p.google_place_id))
+    typer.secho(
+        f"Parsed {slug}: trip + {len(places)} place(s) synced.",
+        fg=typer.colors.GREEN,
+    )
+    if missing:
+        typer.secho(
+            f"  {missing} place(s) missing lat/lng/place_id "
+            "— run `tp parse` again after M3 wires Places API lookup.",
+            fg=typer.colors.YELLOW,
+        )
+
+
+@app.command()
 def spike() -> None:
     """End-to-end spine spike: one Places API call → one-row CSV at /tmp/spike.csv.
 

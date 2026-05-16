@@ -1,0 +1,16 @@
+- id: test-cafe-1
+  name_en: Test Cafe One
+  category: cafe
+  address: 123 Main St, Testtown
+  lat: 35.0
+  lng: 135.0
+  tags: [test, fixture]
+  urls:
+    website: https://example.com/cafe-1
+  notes: A test cafe.
+
+- id: test-shrine-1
+  name_en: Test Shrine
+  name_local: テスト神社
+  category: shrine
+  address: 456 Side St, Testtown
