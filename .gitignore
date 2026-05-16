@@ -1,6 +1,7 @@
 .env
 .venv/
 .claude/settings.local.json
+/spike.csv
 data/*.db
 data/*.db-*
 trips/*/output/

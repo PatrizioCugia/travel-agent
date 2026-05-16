@@ -8,8 +8,13 @@ import sys
 from pathlib import Path
 
 import typer
+from dotenv import load_dotenv
 
 from travel_planner.schema import SCHEMA_DDL
+
+# Auto-load .env from cwd or a parent so GOOGLE_MAPS_API_KEY can live in the
+# repo root without manual `export`.
+load_dotenv()
 
 app = typer.Typer(no_args_is_help=True, help="travel-planner: trip markdown → My Maps CSV.")
 
@@ -84,13 +89,35 @@ def spike() -> None:
         typer.secho("GOOGLE_MAPS_API_KEY not set in environment", fg=typer.colors.RED)
         raise typer.Exit(1)
 
+    from requests.exceptions import HTTPError
+
     from travel_planner.maps.places_lookup import lookup_place
 
     query_name = "Atsuta Houraiken main shop"
     query_addr = "503 Godo-cho, Atsuta-ku, Nagoya"
     typer.echo(f"Looking up: {query_name!r} @ {query_addr!r}")
 
-    result = lookup_place(query_name, query_addr, api_key)
+    try:
+        result = lookup_place(query_name, query_addr, api_key)
+    except HTTPError as e:
+        status = e.response.status_code if e.response is not None else "?"
+        body = e.response.text if e.response is not None else "(no response body)"
+        typer.secho(f"\nPlaces API error: HTTP {status}", fg=typer.colors.RED)
+        typer.echo("Response body:")
+        typer.echo(body)
+        typer.echo("\nLikely causes (check in order):")
+        typer.echo(
+            "  1. Places API (New) not enabled — https://console.cloud.google.com/apis/enabled"
+        )
+        typer.echo("     Make sure 'Places API (New)' is listed (NOT just 'Places API').")
+        typer.echo(
+            "  2. Key restricted to wrong API — https://console.cloud.google.com/apis/credentials"
+        )
+        typer.echo("     Edit key → API restrictions → 'Places API (New)' must be checked.")
+        typer.echo("  3. Billing not yet active — https://console.cloud.google.com/billing")
+        typer.echo("  4. Key just created — wait 2-5 min and retry.")
+        raise typer.Exit(1) from e
+
     if not result:
         typer.secho("No result from Places API", fg=typer.colors.RED)
         raise typer.Exit(1)
@@ -103,19 +130,21 @@ def spike() -> None:
     # CSV schema follows agent A's research (see M1-findings.md):
     # UTF-8 no BOM, LF newlines, RFC-4180 quoting; lat/lng provided to skip
     # the My Maps geocoder; `category` column is the styling hook post-import.
-    out = Path("/tmp/spike.csv")
-    name = (result.get("name") or query_name).replace('"', '""')
+    # `name` is Western-script (My Maps pin title); `name_local` carries the
+    # kanji for taxi-driver / staff use — see [[user-csv-presentation-prefs]].
+    out = _repo_root() / "spike.csv"
+    name_local = (result.get("name") or "").replace('"', '""')
     addr = (result.get("formatted_address") or query_addr).replace('"', '""')
     place_id = result.get("place_id") or ""
     desc = "1873 inventor of hitsumabushi. Walk-in only; 30-60 min wait on weekends."
     tabelog = "https://tabelog.com/en/aichi/A2301/A230112/23000063/"
     header = (
-        "name,latitude,longitude,address,category,day,time_slot,"
+        "name,name_local,latitude,longitude,address,category,day,time_slot,"
         "description,website,tabelog_url,google_place_id"
     )
     row = (
-        f'"{name}",{result.get("lat")},{result.get("lng")},"{addr}",'
-        f'restaurant,2,brunch,"{desc}",,{tabelog},"{place_id}"'
+        f'"{query_name}","{name_local}",{result.get("lat")},{result.get("lng")},'
+        f'"{addr}",restaurant,2,brunch,"{desc}",,{tabelog},"{place_id}"'
     )
     out.write_text(f"{header}\n{row}\n", encoding="utf-8")
     typer.secho(f"\nWrote {out}.", fg=typer.colors.GREEN)

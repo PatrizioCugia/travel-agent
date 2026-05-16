@@ -16,7 +16,7 @@ Output of M1's two-Opus research team. Drives M3 (places lookup) and M5 (output 
 
 ### Output artifacts (M5)
 
-- **`my-maps.csv` columns** (in this order): `name, latitude, longitude, address, category, day, time_slot, description, website, tabelog_url, google_place_id`. UTF-8 **no BOM**, LF newlines, RFC-4180 quoting (doubled quotes inside, embedded `\n` inside quoted multi-line cells).
+- **`my-maps.csv` columns** (in this order): `name, name_local, latitude, longitude, address, category, day, time_slot, description, website, tabelog_url, google_place_id`. UTF-8 **no BOM**, LF newlines, RFC-4180 quoting (doubled quotes inside, embedded `\n` inside quoted multi-line cells). `name` is Western-script (Patrizio prefers Latin for the pin title); `name_local` is the kanji (for showing taxi drivers / restaurant staff in the info card). `description` is one short English line — not a paragraph.
 - **Why lat/lng + address both**: provide lat/lng so the user picks them as the location columns at import → My Maps skips the geocoder entirely. Address remains as metadata in the info card. Skipping the geocoder is critical for Japanese addresses where the geocoder is unreliable.
 - **Pin styling**: no column controls pin color/icon at CSV-import time. Post-import, "Style by data column → `category`" produces consistent styling, and the rule persists across CSV re-imports (My Maps remembers the styling-column). Document this in `trips/<slug>/output/README.md`.
 - **KML alongside CSV**: emit `output/my-maps.kml` with `<Style>` per-category icons + `<Folder>` per day. Lets a fresh import skip the post-import styling click. CSV stays canonical (round-trips style rules on re-import); KML is the styling-baked-in alternative. Sub-5 MB easily at our scale.
