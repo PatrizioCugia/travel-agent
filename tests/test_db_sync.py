@@ -1,4 +1,4 @@
-"""Tests for db/sync.py — DB writes for trip + places."""
+"""Tests for db/sync.py — DB writes for trip + places + days."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ from datetime import date
 import pytest
 
 from travel_planner.db.sync import sync_trip
+from travel_planner.parser.day import DayFrontmatter, DayPlaceRef, ParsedDay
 from travel_planner.parser.places import PlaceModel
 from travel_planner.parser.trip import TripFrontmatter
 from travel_planner.schema import SCHEMA_DDL
@@ -90,3 +91,60 @@ def test_themes_round_trip_as_json(conn: sqlite3.Connection) -> None:
     sync_trip(conn, _trip(), [])
     themes_json = conn.execute("SELECT themes_json FROM trip").fetchone()[0]
     assert json.loads(themes_json) == ["a", "b"]
+
+
+def _days() -> list[ParsedDay]:
+    return [
+        ParsedDay(
+            frontmatter=DayFrontmatter(
+                day_number=1, date=date(2026, 1, 1), location="A", title="Arrive"
+            ),
+            place_refs=[DayPlaceRef(place_slug="p1", order_in_day=0)],
+            notes_path="trips/t1/days/day-01.md",
+        ),
+        ParsedDay(
+            frontmatter=DayFrontmatter(
+                day_number=2, date=date(2026, 1, 2), location="B", title="Walk"
+            ),
+            place_refs=[
+                DayPlaceRef(place_slug="p2", order_in_day=0),
+                DayPlaceRef(place_slug="p1", order_in_day=1),
+            ],
+            notes_path="trips/t1/days/day-02.md",
+        ),
+    ]
+
+
+def test_sync_writes_days_and_day_places(conn: sqlite3.Connection) -> None:
+    sync_trip(conn, _trip(), _places(), _days())
+
+    days = conn.execute(
+        "SELECT trip_id, day_number, date, location, title FROM day ORDER BY day_number"
+    ).fetchall()
+    assert days == [
+        ("t1", 1, "2026-01-01", "A", "Arrive"),
+        ("t1", 2, "2026-01-02", "B", "Walk"),
+    ]
+
+    dps = conn.execute(
+        """
+        SELECT d.day_number, dp.place_id, dp.order_in_day
+        FROM day_place dp
+        JOIN day d ON d.id = dp.day_id
+        ORDER BY d.day_number, dp.order_in_day
+        """
+    ).fetchall()
+    assert dps == [(1, "p1", 0), (2, "p2", 0), (2, "p1", 1)]
+
+
+def test_sync_resync_clears_days(conn: sqlite3.Connection) -> None:
+    sync_trip(conn, _trip(), _places(), _days())
+    sync_trip(conn, _trip(), _places(), [])  # remove all days
+    assert conn.execute("SELECT COUNT(*) FROM day").fetchone()[0] == 0
+    assert conn.execute("SELECT COUNT(*) FROM day_place").fetchone()[0] == 0
+
+
+def test_sync_without_days_argument(conn: sqlite3.Connection) -> None:
+    """Backwards-compatible call: days defaults to empty."""
+    sync_trip(conn, _trip(), _places())
+    assert conn.execute("SELECT COUNT(*) FROM day").fetchone()[0] == 0

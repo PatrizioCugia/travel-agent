@@ -49,8 +49,13 @@ def split_frontmatter(text: str) -> tuple[str, str]:
     return match.group(1), text[match.end() :]
 
 
-def load_trip_frontmatter(trip_md: Path) -> TripFrontmatter:
-    """Load and validate trip.md's frontmatter."""
+def load_trip_frontmatter(trip_md: Path, repo_root: Path | None = None) -> TripFrontmatter:
+    """Load and validate trip.md's frontmatter.
+
+    If `repo_root` is given and the frontmatter doesn't already declare
+    `notes_path`, we set it to `trip_md` relative to repo_root — so the DB
+    has a back-pointer to the canonical markdown.
+    """
     if not trip_md.exists():
         raise FileNotFoundError(f"trip.md not found at {trip_md}")
     text = trip_md.read_text(encoding="utf-8")
@@ -58,4 +63,7 @@ def load_trip_frontmatter(trip_md: Path) -> TripFrontmatter:
     if not yaml_block.strip():
         raise ValueError(f"trip.md at {trip_md} has no frontmatter")
     raw: Any = _yaml_reader.load(yaml_block) or {}
-    return TripFrontmatter.model_validate(raw)
+    fm = TripFrontmatter.model_validate(raw)
+    if repo_root is not None and fm.notes_path is None:
+        fm.notes_path = str(trip_md.relative_to(repo_root))
+    return fm

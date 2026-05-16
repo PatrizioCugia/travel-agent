@@ -67,7 +67,7 @@ class Day:
     id: int | None = None
     date: date | None = None
     location: str | None = None
-    theme: str | None = None
+    title: str | None = None
     notes_path: str | None = None
 
 
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS day (
     day_number INTEGER NOT NULL,
     date TEXT,
     location TEXT,
-    theme TEXT,
+    title TEXT,
     notes_path TEXT,
     UNIQUE (trip_id, day_number)
 );

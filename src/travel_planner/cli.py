@@ -104,23 +104,33 @@ def parse(
     from travel_planner.db.sync import sync_trip
     from travel_planner.maps.cache import PlacesCache
     from travel_planner.maps.enrich import enrich_places, write_misses_report
+    from travel_planner.parser.day import load_days, validate_day_refs
     from travel_planner.parser.places import load_places
     from travel_planner.parser.trip import load_trip_frontmatter
 
-    trip_dir = _repo_root() / "trips" / slug
+    repo_root = _repo_root()
+    trip_dir = repo_root / "trips" / slug
     if not trip_dir.is_dir():
         typer.secho(f"Trip directory not found: {trip_dir}", fg=typer.colors.RED)
         raise typer.Exit(1)
 
     places_yaml = trip_dir / "places.yaml"
     trip_md = trip_dir / "trip.md"
+    days_dir = trip_dir / "days"
 
     try:
-        trip = load_trip_frontmatter(trip_md)
+        trip = load_trip_frontmatter(trip_md, repo_root=repo_root)
         places = load_places(places_yaml)
+        days = load_days(days_dir, repo_root)
     except (FileNotFoundError, ValueError, ValidationError) as e:
         typer.secho(f"Parse error: {e}", fg=typer.colors.RED)
         raise typer.Exit(1) from e
+
+    ref_errors = validate_day_refs(days, {p.id for p in places})
+    if ref_errors:
+        for err in ref_errors:
+            typer.secho(f"  dangling ref: {err}", fg=typer.colors.RED)
+        raise typer.Exit(1)
 
     if trip.trip_id != slug:
         typer.secho(
@@ -157,11 +167,13 @@ def parse(
         )
 
     with sqlite3.connect(_db_path()) as conn:
-        sync_trip(conn, trip, places)
+        sync_trip(conn, trip, places, days)
 
     missing = sum(1 for p in places if not (p.lat and p.lng and p.google_place_id))
+    day_place_count = sum(len(d.place_refs) for d in days)
     typer.secho(
-        f"Parsed {slug}: trip + {len(places)} place(s) synced.",
+        f"Parsed {slug}: trip + {len(places)} place(s) + "
+        f"{len(days)} day(s) ({day_place_count} day-place link(s)) synced.",
         fg=typer.colors.GREEN,
     )
     if missing:
