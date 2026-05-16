@@ -17,6 +17,8 @@ from travel_planner.schema import SCHEMA_DDL
 load_dotenv()
 
 app = typer.Typer(no_args_is_help=True, help="travel-planner: trip markdown → My Maps CSV.")
+map_app = typer.Typer(no_args_is_help=True, help="Map artifact commands.")
+app.add_typer(map_app, name="map")
 
 
 def _repo_root() -> Path:
@@ -258,6 +260,40 @@ def spike() -> None:
     typer.echo("  - Pick `name` as the title column")
     typer.echo("  - Pick `latitude` + `longitude` as the location columns (skips geocoder)")
     typer.echo("Report back: did the pin land where expected? What did the info-card show?")
+
+
+@map_app.command("generate")
+def map_generate(slug: str) -> None:
+    """Generate output artifacts for a trip (CSV, KML, daily routes, indexes).
+
+    Requires the trip to be parsed first (`tp parse <slug>`). Writes to
+    `trips/<slug>/output/`.
+    """
+    from travel_planner.output.generate import generate
+
+    repo_root = _repo_root()
+    trip_dir = repo_root / "trips" / slug
+    if not trip_dir.is_dir():
+        typer.secho(f"Trip directory not found: {trip_dir}", fg=typer.colors.RED)
+        raise typer.Exit(1)
+
+    output_dir = trip_dir / "output"
+    try:
+        with sqlite3.connect(_db_path()) as conn:
+            report = generate(slug, output_dir, conn)
+    except ValueError as e:
+        typer.secho(str(e), fg=typer.colors.RED)
+        raise typer.Exit(1) from e
+
+    typer.secho(
+        f"Generated {len(report.files_written)} file(s) in {output_dir.relative_to(repo_root)}/",
+        fg=typer.colors.GREEN,
+    )
+    typer.echo(
+        f"  {report.places_pinned}/{report.places_total} place(s) pinned, "
+        f"{report.places_saveable} saveable, "
+        f"{report.days_with_routes} day(s) with routes"
+    )
 
 
 if __name__ == "__main__":
