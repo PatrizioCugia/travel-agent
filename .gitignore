@@ -1,0 +1,16 @@
+.env
+.venv/
+.claude/settings.local.json
+data/*.db
+data/*.db-*
+trips/*/output/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+build/
+*.egg-info/
+.DS_Store
