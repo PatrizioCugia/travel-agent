@@ -33,6 +33,30 @@ def _db_path() -> Path:
     return _repo_root() / "data" / "travel_planner.db"
 
 
+def _resolve_slug_or_exit(input_slug: str) -> str:
+    """Fuzzy-resolve a trip slug. Exits 1 with a helpful message on miss/ambiguity."""
+    from travel_planner.resolve import list_trips, resolve_slug
+
+    trips = list_trips(_repo_root() / "trips")
+    slug, candidates = resolve_slug(input_slug, trips)
+    if slug is not None:
+        if slug != input_slug:
+            typer.secho(f"  resolved {input_slug!r} → {slug!r}", fg=typer.colors.BLUE)
+        return slug
+    if candidates:
+        typer.secho(
+            f"Multiple trips match {input_slug!r}: {', '.join(candidates)}",
+            fg=typer.colors.RED,
+        )
+    else:
+        available = ", ".join(trips) if trips else "(no trips yet)"
+        typer.secho(
+            f"No trip matches {input_slug!r}. Available: {available}",
+            fg=typer.colors.RED,
+        )
+    raise typer.Exit(1)
+
+
 @app.command()
 def doctor() -> None:
     """Health check: Python version, API key, DB path, schema reachability."""
@@ -110,11 +134,9 @@ def parse(
     from travel_planner.parser.places import load_places
     from travel_planner.parser.trip import load_trip_frontmatter
 
+    slug = _resolve_slug_or_exit(slug)
     repo_root = _repo_root()
     trip_dir = repo_root / "trips" / slug
-    if not trip_dir.is_dir():
-        typer.secho(f"Trip directory not found: {trip_dir}", fg=typer.colors.RED)
-        raise typer.Exit(1)
 
     places_yaml = trip_dir / "places.yaml"
     trip_md = trip_dir / "trip.md"
@@ -271,13 +293,9 @@ def map_generate(slug: str) -> None:
     """
     from travel_planner.output.generate import generate
 
+    slug = _resolve_slug_or_exit(slug)
     repo_root = _repo_root()
-    trip_dir = repo_root / "trips" / slug
-    if not trip_dir.is_dir():
-        typer.secho(f"Trip directory not found: {trip_dir}", fg=typer.colors.RED)
-        raise typer.Exit(1)
-
-    output_dir = trip_dir / "output"
+    output_dir = repo_root / "trips" / slug / "output"
     try:
         with sqlite3.connect(_db_path()) as conn:
             report = generate(slug, output_dir, conn)
@@ -294,6 +312,65 @@ def map_generate(slug: str) -> None:
         f"{report.places_saveable} saveable, "
         f"{report.days_with_routes} day(s) with routes"
     )
+
+
+@map_app.command("register-url")
+def map_register_url(slug: str, url: str) -> None:
+    """Store the My Maps URL for a trip after you've imported the CSV.
+
+    Run this once after the manual My Maps import so `tp map open <slug>`
+    knows where to send you.
+    """
+    slug = _resolve_slug_or_exit(slug)
+    with sqlite3.connect(_db_path()) as conn:
+        cur = conn.execute("UPDATE trip SET my_maps_url = ? WHERE id = ?", (url, slug))
+        if cur.rowcount == 0:
+            typer.secho(
+                f"Trip {slug!r} not in DB yet — run `tp parse {slug}` first.",
+                fg=typer.colors.RED,
+            )
+            raise typer.Exit(1)
+        conn.commit()
+    typer.secho(f"Registered map URL for {slug}.", fg=typer.colors.GREEN)
+    typer.echo(f"  {url}")
+
+
+@map_app.command("open")
+def map_open(slug: str) -> None:
+    """Open the trip's registered My Maps URL in your default browser."""
+    import webbrowser
+
+    slug = _resolve_slug_or_exit(slug)
+    with sqlite3.connect(_db_path()) as conn:
+        row = conn.execute("SELECT my_maps_url FROM trip WHERE id = ?", (slug,)).fetchone()
+    if row is None:
+        typer.secho(
+            f"Trip {slug!r} not in DB. Run `tp parse {slug}` first.",
+            fg=typer.colors.RED,
+        )
+        raise typer.Exit(1)
+    if not row[0]:
+        typer.secho(
+            f"No map URL registered for {slug}. "
+            f"Run `tp map register-url {slug} <url>` after importing the CSV.",
+            fg=typer.colors.RED,
+        )
+        raise typer.Exit(1)
+    typer.echo(f"Opening {row[0]}")
+    webbrowser.open(row[0])
+
+
+@app.command("trips")
+def list_trips_cmd() -> None:
+    """List all trips found under `trips/`."""
+    from travel_planner.resolve import list_trips
+
+    trips = list_trips(_repo_root() / "trips")
+    if not trips:
+        typer.echo("(no trips yet — create one under trips/<slug>/)")
+        return
+    for slug in trips:
+        typer.echo(slug)
 
 
 if __name__ == "__main__":
