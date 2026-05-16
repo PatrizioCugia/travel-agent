@@ -27,8 +27,8 @@ def _candidate(
     place_id: str = "ChIJtest",
     name: str = "Test Place",
     formatted_address: str = "1-2-3 Test, Nagoya",
-    lat: float = 35.0,
-    lng: float = 136.0,
+    lat: float = 35.18,  # Nagoya center — passes the distance gate
+    lng: float = 136.91,
     business_status: str | None = "OPERATIONAL",
     rating: float | None = 4.5,
     user_ratings_total: int | None = 100,

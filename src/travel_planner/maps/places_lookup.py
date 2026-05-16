@@ -16,6 +16,7 @@ the cost/field-mask discussion.
 from __future__ import annotations
 
 import logging
+import math
 import re
 from dataclasses import dataclass
 from typing import Any
@@ -26,11 +27,48 @@ log = logging.getLogger(__name__)
 
 PLACES_NEW_TEXT_SEARCH_URL = "https://places.googleapis.com/v1/places:searchText"
 
-# Nagoya-area bias for travel-planner's first trip. Phase-1 hardcode;
-# generalize when a second trip lands.
+# Nagoya-area bias as the default. Per-place address keywords override this
+# (see _bias_for_address) so non-Nagoya places — Tsumago, Hikone, Okuhida,
+# KIX — don't get pulled into the wrong region by an overly tight bias.
 NAGOYA_CENTER_LAT = 35.18
 NAGOYA_CENTER_LNG = 136.91
 NAGOYA_RADIUS_M = 25_000
+
+# Keyword → (lat, lng) hints. Order matters for substring overlaps —
+# more-specific keywords first.
+_REGION_HINTS: list[tuple[str, tuple[float, float]]] = [
+    ("kansai", (34.434, 135.244)),
+    ("kix", (34.434, 135.244)),
+    ("izumisano", (34.434, 135.244)),
+    ("shin-hirayu", (36.180, 137.518)),
+    ("hirayu", (36.180, 137.518)),
+    ("okuhida", (36.180, 137.518)),
+    ("shin-hotaka", (36.291, 137.581)),
+    ("takayama", (36.140, 137.253)),
+    ("tsumago", (35.587, 137.598)),
+    ("nagiso", (35.587, 137.598)),
+    ("magome", (35.529, 137.553)),
+    ("nakatsugawa", (35.487, 137.500)),
+    ("kiso", (35.587, 137.598)),
+    ("hikone", (35.271, 136.260)),
+    ("shiga", (35.005, 135.868)),
+    ("seki", (35.494, 136.917)),
+    ("tokoname", (34.881, 136.835)),
+    ("atsuta", (35.127, 136.908)),
+    ("nagoya", (NAGOYA_CENTER_LAT, NAGOYA_CENTER_LNG)),
+    ("aichi", (NAGOYA_CENTER_LAT, NAGOYA_CENTER_LNG)),
+]
+
+
+def _bias_for_address(address: str | None) -> tuple[float, float]:
+    if not address:
+        return (NAGOYA_CENTER_LAT, NAGOYA_CENTER_LNG)
+    lower = address.lower()
+    for keyword, coords in _REGION_HINTS:
+        if keyword in lower:
+            return coords
+    return (NAGOYA_CENTER_LAT, NAGOYA_CENTER_LNG)
+
 
 # Field mask: Pro + Enterprise(rating/userRatingCount) only — both fit our
 # free-tier budget for ~50 calls/trip. Avoid reviews/photos (Atmosphere).
@@ -51,6 +89,22 @@ DEFAULT_FIELD_MASK = ",".join(
 CONFIDENCE_THRESHOLD = 0.60
 # Gap between #1 and #2 below which we de-rate confidence (ambiguous).
 AMBIGUITY_GAP = 0.10
+# Distance gate: even if the API returns a high-confidence match for a query
+# biased toward, say, Tsumago, reject it if the result is more than this many
+# km from the bias center. Catches cases where a famous similarly-named place
+# in another region outranks the actual local place on review count.
+MAX_DISTANCE_FROM_BIAS_KM = 50.0
+
+
+def _distance_km(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
+    """Great-circle distance in km. Good enough for region gating."""
+    r_earth = 6371.0
+    lat1_r = math.radians(lat1)
+    lat2_r = math.radians(lat2)
+    dlat = math.radians(lat2 - lat1)
+    dlng = math.radians(lng2 - lng1)
+    a = math.sin(dlat / 2) ** 2 + math.cos(lat1_r) * math.cos(lat2_r) * math.sin(dlng / 2) ** 2
+    return 2 * r_earth * math.asin(math.sqrt(a))
 
 
 @dataclass
@@ -121,8 +175,12 @@ def _request_text_search(
     query: str,
     language: str,
     api_key: str,
+    *,
+    bias_center: tuple[float, float] | None = None,
     page_size: int = 5,
 ) -> dict[str, Any]:
+    if bias_center is None:
+        bias_center = (NAGOYA_CENTER_LAT, NAGOYA_CENTER_LNG)
     body: dict[str, Any] = {
         "textQuery": query,
         "languageCode": language,
@@ -130,8 +188,8 @@ def _request_text_search(
         "locationBias": {
             "circle": {
                 "center": {
-                    "latitude": NAGOYA_CENTER_LAT,
-                    "longitude": NAGOYA_CENTER_LNG,
+                    "latitude": bias_center[0],
+                    "longitude": bias_center[1],
                 },
                 "radius": float(NAGOYA_RADIUS_M),
             }
@@ -231,9 +289,10 @@ def lookup_with_scoring(
     log a miss for manual review (see `enrich.py`).
     """
     attempts = _build_attempts(name_en, name_local, address)
+    bias = _bias_for_address(address)
 
     for query, language in attempts:
-        data = _request_text_search(query, language, api_key, page_size=5)
+        data = _request_text_search(query, language, api_key, bias_center=bias, page_size=5)
         candidates = data.get("places") or []
         if not candidates:
             continue
@@ -260,6 +319,16 @@ def lookup_with_scoring(
         latitude = loc.get("latitude")
         longitude = loc.get("longitude")
         if not place_id or latitude is None or longitude is None:
+            continue
+
+        # Distance gate: reject matches far from the expected region.
+        dist = _distance_km(float(latitude), float(longitude), bias[0], bias[1])
+        if dist > MAX_DISTANCE_FROM_BIAS_KM:
+            log.warning(
+                "Best match for %r is %.0f km from bias center — wrong region",
+                query,
+                dist,
+            )
             continue
 
         return LookupResult(

@@ -1,0 +1,746 @@
+# Nagoya November 2026 — places (canonical list)
+
+- id: anshin-oyado-sakae
+  name_en: Anshin Oyado Premier Sakae
+  name_local: 安心お宿プレミア栄店
+  category: accommodation
+  address: Sakae, Naka-ku, Nagoya
+  tags: [capsule-hotel, onsen, base]
+  notes: Premium capsule hotel in Sakae used as the 7-night Nagoya base. Onsen on premises and free lobby curry and ramen snacks make it a comfortable, low-friction headquarters for dense urban days. Around 1,860 kr per night.
+
+  google_place_id: ChIJe93iIeNxA2ARLgxjVLh2xvQ
+  lat: 35.169948
+  lng: 136.90377
+- id: maruya-tsumago
+  name_en: Maruya
+  name_local: 丸屋
+  category: accommodation
+  address: Tsumago, Nagiso, Nagano
+  tags: [minshuku, dinner-breakfast-included, singular-experience, must-book-ahead, booking-needed]
+  notes: Family-run minshuku operating since 1789 in the preserved Edo post town of Tsumago. Two nights with traditional dinner and breakfast included, around 970 kr per night. Book 6 to 8 weeks ahead. Core anchor of the Nakasendo leg.
+
+- id: yamano-iori-hotaka-so
+  name_en: Yamano-iori Hotaka-so
+  name_local: 山の庵 穂高荘
+  category: accommodation
+  address: Shin-Hirayu Onsen, Okuhida, Gifu
+  tags: [minshuku, onsen, dinner-breakfast-included, singular-experience, must-book-ahead, booking-needed]
+  notes: Mountain minshuku in Shin-Hirayu within the Okuhida onsen cluster. Dinner and breakfast included, around 1,130 kr per night. Northern Alps setting, traditional dinner, onsen access. Book 6 to 8 weeks ahead.
+
+  google_place_id: ChIJR7__1im7AmARu40LycCC3vQ
+  lat: 36.143235
+  lng: 137.25332
+- id: wakashachiya
+  name_en: Wakashachiya
+  name_local: 若鯱家
+  category: restaurant
+  address: Nagoya Station and Sakae locations
+  tags: [curry-udon, arrival-dinner]
+  notes: Local Nagoya curry udon chain. Chosen as the Day 1 light arrival dinner — warm, fast, unmistakably Nagoya-meshi, low expectations and minimal logistics on a jet-lagged first evening.
+
+- id: atsuta-houraiken-honten
+  name_en: Atsuta Houraiken (main shop)
+  name_local: あつた蓬莱軒 本店
+  category: restaurant
+  address: 503 Godo-cho, Atsuta-ku, Nagoya
+  tags: [hitsumabushi, walk-in-only, founding-restaurant]
+  urls:
+    tabelog: https://tabelog.com/en/aichi/A2301/A230112/23000063/
+  notes: The 1873 inventor of hitsumabushi — grilled eel over rice eaten in four progressively dressed servings. Walk-in only with 30 to 60 minute waits on weekends. Day 2 brunch anchor after Atsuta Jingu.
+
+  google_place_id: ChIJJRIRWR96A2AR1pCxwc4H298
+  lat: 35.120169
+  lng: 136.906898
+- id: atsuta-houraiken-jinguten
+  name_en: Atsuta Houraiken Jingu-ten
+  name_local: あつた蓬莱軒 神宮店
+  category: restaurant
+  address: Near Atsuta Jingu, Atsuta-ku, Nagoya
+  tags: [hitsumabushi, backup]
+  urls:
+    tabelog: https://tabelog.com/en/aichi/A2301/A230112/23000109/
+  notes: Second Houraiken outlet adjacent to Atsuta Jingu, used as the fallback for the main shop when the wait is excessive. Same dish, same family operation, lower theater.
+
+  google_place_id: ChIJAQBwxBh6A2ARcxKia4ZEwwI
+  lat: 35.12227
+  lng: 136.908564
+- id: hamasho-nishiki
+  name_en: Hamasho Nishiki Honten
+  name_local: 浜匠 錦本店
+  category: restaurant
+  address: B1F, 3-15-1 Nishiki, Naka-ku, Nagoya
+  tags: [izakaya, cochin, yakitori, tebasaki]
+  notes: Nagoya Cochin chicken specialist izakaya with the full local register — yakitori, tebasaki wings, doteni stewed offal. Day 2 dinner pick after Tokugawa, easy bridge to Bar Barns. Budget around 5,000 to 7,000 yen.
+
+  google_place_id: ChIJ-Q34MtRwA2ARvchF6hDN_Cs
+  lat: 35.171612
+  lng: 136.907006
+- id: yamamotoya-honten-esca
+  name_en: Yamamotoya Honten ESCA
+  name_local: 山本屋本店 エスカ店
+  category: restaurant
+  address: B1F ESCA, Nagoya Station underground, Nakamura-ku, Nagoya
+  tags: [miso-nikomi-udon]
+  urls:
+    tabelog: https://tabelog.com/en/aichi/A2301/A230101/23000123/
+  notes: Miso-nikomi udon in Kakukyu hatcho miso broth, served in a clay donabe at a near-boil. Day 3 dinner returning from Tokoname — warm, dense, station-adjacent. Budget around 1,500 to 2,000 yen.
+
+  google_place_id: ChIJKQ7OUOZ2A2ARFH1LrGYe2IA
+  lat: 35.169535
+  lng: 136.880542
+- id: kanazawa-maimon-sushi
+  name_en: Kanazawa Maimon Sushi
+  name_local: 金沢まいもん寿司
+  category: restaurant
+  address: Sakae area, Nagoya
+  tags: [sushi, kaiten, lunch]
+  notes: Conveyor sushi outpost of the Kanazawa brand, serving premium Sea of Japan fish at lunch prices. Day 4 lunch — high quality-to-effort ratio before the omakase dinner the same evening. Budget around 3,000 to 5,000 yen.
+
+  google_place_id: ChIJp_snsGdxA2ARilXFQgD5Cyw
+  lat: 35.164025
+  lng: 136.907319
+- id: sushi-okimuraya
+  name_en: Sushi Okimuraya
+  name_local: 鮨 沖村屋
+  category: restaurant
+  address: 1-14-44 Higashi-sakura, Higashi-ku, Nagoya
+  tags: [sushi, omakase, edomae, must-book-ahead, booking-needed]
+  notes: Edomae omakase counter, the dinner anchor for the seafood day. Around 15,000 yen, book 3 to 4 weeks ahead. The "city sushi" counterweight to the Yanagibashi morning market.
+
+- id: sakana-no-hachibei
+  name_en: Sakana no Hachibei Yabacho
+  name_local: 魚の八兵衛 矢場町
+  category: restaurant
+  address: Yabacho, Naka-ku, Nagoya
+  tags: [izakaya, premium, seafood, must-book-ahead, booking-needed]
+  notes: Premium seafood izakaya with deep Aichi sake list. Day 5 dinner after the Seki knife day trip. Budget around 6,000 to 8,000 yen, book 1 to 2 weeks ahead.
+
+  google_place_id: ChIJdXU8qWlxA2AR_TmYtZqRqdU
+  lat: 35.163637
+  lng: 136.911188
+- id: mitsumura-tempura
+  name_en: Tempura Kakiage Mitsumura
+  name_local: 天ぷら かきあげ 三村
+  category: restaurant
+  address: Imaike area, Chikusa-ku, Nagoya
+  tags: [tempura, lunch]
+  notes: Tempura specialist working a 50-year-old tare. Day 6 lunch between Osu shopping and the yakiniku evening. Budget around 2,500 to 3,500 yen.
+
+- id: setsugekka-tanaka-satoru
+  name_en: Setsugekka Tanaka Satoru
+  name_local: 雪月花 田中悟
+  category: restaurant
+  address: Sakae, Naka-ku, Nagoya
+  tags: [yakiniku, tabelog-award, must-book-ahead, booking-needed]
+  urls:
+    tabelog: https://tabelog.com/en/aichi/A2301/A230103/23071686/
+  notes: Tabelog Bronze 2024 to 2026 yakiniku, course-driven cuts and aged beef. Day 6 dinner — the trip's premium meat experience. Around 10,000 to 15,000 yen, book 3 to 4 weeks ahead.
+
+  google_place_id: ChIJRzSgQ9NwA2AReOaH8BV94Tc
+  lat: 35.167374
+  lng: 136.903827
+- id: gomitori
+  name_en: Gomitori (Museum Izakaya)
+  name_local: 伍味酉 本店
+  category: restaurant
+  address: 3-15-6 Sakae, Naka-ku, Nagoya
+  tags: [izakaya, late-night, nagoya-meshi]
+  notes: 1956 Sakae institution serving the full Nagoya-meshi canon under one roof until 5am. Optional late dinner or second-stop on Day 5 or post-Korankei on Day 7. Budget around 3,000 to 5,000 yen.
+
+  google_place_id: ChIJTVIlE9NwA2ARHQZcybiJcgY
+  lat: 35.167203
+  lng: 136.90453
+- id: tokoname-local-lunch
+  name_en: Tokoname pottery walk lunch
+  category: restaurant
+  address: Pottery Footpath, Tokoname, Aichi
+  tags: [local, lunch, flexible]
+  notes: Walk-in seafood or local-set lunch placeholder along the Pottery Footpath during the Day 3 Tokoname trip. Around 1,500 to 2,500 yen — pick by foot traffic and signage, no advance booking.
+
+  google_place_id: ChIJ_fTz9UuHBGAR9x7ADIKLBrU
+  lat: 34.88753
+  lng: 136.83967
+- id: seki-local-lunch
+  name_en: Seki knife town lunch
+  category: restaurant
+  address: Near Seki Hamono Museum, Seki, Gifu
+  tags: [local, lunch, flexible]
+  notes: Soba or eel placeholder near the Hamono Museum on the Day 5 Seki knife trip. Around 1,500 to 2,500 yen. Pick by proximity to the knife shopping route.
+
+- id: korankei-village-lunch
+  name_en: Korankei village lunch
+  category: restaurant
+  address: Near Taigetsu Bridge, Asuke, Toyota City, Aichi
+  tags: [local, lunch, flexible, korankei]
+  notes: Sansai soba or gohei-mochi set near Taigetsu Bridge during the Day 7 Korankei autumn trip. Mountain-village register, around 2,000 to 2,500 yen.
+
+- id: korankei-village-stalls
+  name_en: Korankei village food stalls
+  category: restaurant
+  address: Korankei gorge approach, Asuke, Toyota City, Aichi
+  tags: [street-food, korankei, late-afternoon, singular-experience]
+  notes: Illumination-season food stalls along the gorge — gohei-mochi over charcoal, yakitori, hot sake. The Day 7 dinner-while-walking that pairs with the night maple illumination. Around 1,500 to 2,500 yen.
+
+  google_place_id: ChIJO7D5qt52A2ARssqBgiIQo8E
+  lat: 35.169991
+  lng: 136.88804
+- id: hikone-omi-beef
+  name_en: Hikone Omi beef restaurant
+  category: restaurant
+  address: Yume Kyobashi Castle Road, Hikone, Shiga
+  tags: [wagyu, omi-beef, lunch]
+  notes: Senmaru or Kaneki for Omi beef lunch along the castle-approach road during the Day 8 Hikone half-day. Omi is one of Japan's three classical wagyu strains. Budget around 3,500 to 5,500 yen.
+
+- id: bar-barns
+  name_en: Bar Barns
+  name_local: バー バーンズ
+  category: bar
+  address: Nishiki, Naka-ku, Nagoya (Fushimi)
+  tags: [whisky, cocktail, speakeasy, must-book-ahead, booking-needed]
+  urls:
+    tabelog: https://tabelog.com/en/aichi/A2301/A230102/23000103/
+  notes: Speakeasy bar run by owner-bartender Toru Hirai, deep whisky shelf and classical cocktail craft. Day 2 nightcap after Hamasho. Around 1,500 to 2,500 yen per drink. Book ahead.
+
+  google_place_id: ChIJV0GDoSt3A2ARHCBLwcVRv4U
+  lat: 35.167678
+  lng: 136.900152
+- id: sake-stand-sabou
+  name_en: Sake Stand Sabou
+  name_local: 酒場 茶房
+  category: bar
+  address: Sakae, Naka-ku, Nagoya
+  tags: [sake, standing-bar, afternoon]
+  notes: Daytime sake standing bar — a few small pours of regional sake on the feet, no commitment. Slots into the Day 4 afternoon between Trunk Coffee and the omakase dinner.
+
+- id: bar-hasegawa
+  name_en: Bar Hasegawa
+  name_local: バー長谷川
+  category: bar
+  address: Sakae, Naka-ku, Nagoya
+  tags: [classic-cocktail, alternative]
+  notes: Classic cocktail bar in Sakae used as the Day 5 alternative when the Hachibei dinner doesn't extend into a second stop. Quiet, precise, conservative shelf.
+
+- id: bar-lumina
+  name_en: Bar Lumina
+  name_local: バー ルミナ
+  category: bar
+  address: Sakae, Naka-ku, Nagoya
+  tags: [cocktail, alternative, backup]
+  notes: Cocktail bar alternative to Bar Hasegawa for Day 5's optional second stop. Picked on the night based on mood and door.
+
+  google_place_id: ChIJ19ZfkdVwA2ARWpnrB0PYZHc
+  lat: 35.172831
+  lng: 136.906165
+- id: zenkoku-meishu-izakaya
+  name_en: Zenkoku Meishu Izakaya
+  name_local: 全国銘酒居酒屋
+  category: bar
+  address: Sakae, Naka-ku, Nagoya
+  tags: [sake, izakaya, aichi-sake, english-menu]
+  notes: Sake-focused izakaya with 100-plus Aichi sake on the list and an English menu. Day 6 night option for a sake-deep close to the yakiniku day before the late ice-cream stop.
+
+  google_place_id: ChIJPbq57RRxA2AROOZr96gNU_Q
+  lat: 35.168018
+  lng: 136.90316
+- id: pettegola
+  name_en: PETTEGOLA
+  name_local: ペッテゴラ
+  category: bar
+  address: Near Fushimi, Naka-ku, Nagoya
+  tags: [shime-parfait, late-night, sapporo-style, alternative]
+  notes: Sapporo-style shime parfait bar — the post-dinner sweet-and-booze ritual where parfait is the closer, not the opener. Open Tue to Thu 19:00 to 23:00, Fri and Sat to 24:00. Alternative late stop.
+
+  google_place_id: ChIJKYGmv3d3A2AR1d_dgZInGlk
+  lat: 35.164465
+  lng: 136.902292
+- id: konparu-kissaten
+  name_en: Konparu
+  name_local: コンパル
+  category: cafe
+  address: Sakae, Naka-ku, Nagoya
+  tags: [kissaten, breakfast, ogura-toast, nagoya-meshi]
+  notes: Classic Nagoya kissaten for the morning set — ogura toast (red bean paste on thick toast), egg sandwich, blended coffee. Day 6 breakfast before Osu Kannon and the Osu shopping crawl.
+
+- id: komeda-coffee
+  name_en: Komeda's Coffee Nishiki Isemachitori
+  name_local: コメダ珈琲店 錦伊勢町通店
+  category: cafe
+  address: Nishiki Isemachi-dori, Naka-ku, Nagoya
+  tags: [kissaten, chain, nagoya-origin]
+  notes: Local-since-1968 Nagoya kissaten chain with red velvet sofa interior. Day 6 afternoon pause between shopping rounds — shiro noir and a small coffee, low cost, low-stakes.
+
+  google_place_id: ChIJSWm7pdVwA2ARjItCd903NRg
+  lat: 35.17173
+  lng: 136.905771
+- id: trunk-coffee
+  name_en: Trunk Coffee
+  name_local: トランクコーヒー
+  category: cafe
+  address: Near Horikawa, Higashi-ku, Nagoya
+  tags: [specialty-coffee, third-wave]
+  notes: Third-wave specialty coffee — light roasts, single origin, careful brews. Day 4 afternoon stop between the Shikemichi walk and the early-evening standing-sake bar.
+
+- id: ryoguchiya-tokugawa
+  name_en: Ryoguchiya Korekiyo at Tokugawa Art Museum
+  name_local: 両口屋是清
+  category: cafe
+  address: Tokugawa Art Museum, Higashi-ku, Nagoya
+  tags: [wagashi, traditional, museum-cafe, souvenir-source]
+  notes: 1634 Owari Tokugawa wagashi purveyor with a small counter inside the museum complex. Day 2 afternoon stop after the Tokugawa Art Museum; also the Grandma souvenir source (Sasaragata box).
+
+  google_place_id: ChIJp-eMF_1wA2ARC_ohxjLyXbY
+  lat: 35.18387
+  lng: 136.933245
+- id: masuhan-chaten
+  name_en: Masuhan Chaten
+  name_local: 増半茶店
+  category: cafe
+  address: Fushimi, Naka-ku, Nagoya
+  tags: [matcha, historic, hojicha]
+  notes: 1840 tea shop reopened in 2023, serving matcha ice cream and hojicha latte alongside its tea retail. Quiet afternoon pause near Fushimi on Day 6 or as a slot fill.
+
+  google_place_id: ChIJj0VR29V2A2AR1wCU3RJ8afk
+  lat: 35.171953
+  lng: 136.898478
+- id: kawabun
+  name_en: Kawabun Ultimate Matcha Parfait
+  name_local: 川文
+  category: cafe
+  address: 2-12-19 Marunouchi, Naka-ku, Nagoya
+  tags: [matcha, parfait, weekday-only, must-book-ahead, booking-needed, singular-experience]
+  notes: Nagoya's 400-year-old restaurant serving a seven-matcha tasting parfait on weekdays only, 13:00 to 17:30. Day 4 afternoon centerpiece — the matcha-depth experience for the trip. Day 4 must be a weekday.
+
+  google_place_id: ChIJKT-Pf9N2A2ARZwSk0oXtazc
+  lat: 35.175676
+  lng: 136.900472
+- id: saijoen-matcha-cafe
+  name_en: Saijoen Matcha Cafe
+  name_local: 西条園抹茶カフェ
+  category: cafe
+  address: Dai Nagoya Building B1F, Nakamura-ku, Nagoya
+  tags: [matcha, modern, backup]
+  notes: Chez Shibata patissier collaboration using Nishio matcha, modernist plating. Backup for Kawabun on Day 4 when Kawabun is closed (weekends) or full.
+
+  google_place_id: ChIJyzjvrtZ3A2ARJnvP031e7v0
+  lat: 35.171995
+  lng: 136.884528
+- id: aoyagi-sohonke-kitte
+  name_en: Aoyagi Sohonke at KITTE Nagoya
+  name_local: 青柳総本家 KITTE名古屋
+  category: cafe
+  address: KITTE Nagoya 1F, Nakamura-ku, Nagoya
+  tags: [uirou, matcha, wagashi]
+  notes: 1879 uirou (rice-flour confection) maker with a sit-down counter doing matcha and uirou sets, daily 10:00 to 21:00. Day 8 pre-departure morning option in Nagoya Station before the Shinano to Nakatsugawa.
+
+  google_place_id: ChIJYwxwQOh2A2ARHvv5eaxdnG0
+  lat: 35.173241
+  lng: 136.882196
+- id: 25-ji-made-ice
+  name_en: 25-ji-made Ice
+  name_local: 25時までアイス
+  category: cafe
+  address: Tomiya Bldg 1F, 4-17-24 Sakae, Naka-ku, Nagoya
+  tags: [shime-parfait, takeout, late-night]
+  notes: Takeout late-night parfait counter open 17:00 to 25:00, with alcohol-spiked options. Post-yakiniku Day 6 closer — eat it walking back through Sakae.
+
+- id: atsuta-jingu
+  name_en: Atsuta Jingu
+  name_local: 熱田神宮
+  category: shrine
+  address: 1-1-1 Jingu, Atsuta-ku, Nagoya
+  tags: [major-shrine, kusanagi, souvenir-source]
+  notes: One of Japan's most sacred Shinto shrines, traditional home of the Kusanagi sword. Day 2 morning anchor before Houraiken hitsumabushi. Five omamori sourced here for the souvenir budget.
+
+  google_place_id: ChIJ3abhnht6A2ARu-Y4yDEWlao
+  lat: 35.127358
+  lng: 136.908695
+- id: tokugawa-en
+  name_en: Tokugawa-en Garden
+  name_local: 徳川園
+  category: garden
+  address: 1001 Tokugawa-cho, Higashi-ku, Nagoya
+  tags: [edo-period, autumn-foliage]
+  notes: Edo-period strolling garden with peak November maple foliage — the in-city autumn fix before the Korankei day. Around 300 yen entry. Day 2 afternoon, paired with the Tokugawa Art Museum and Ryoguchiya counter.
+
+  google_place_id: ChIJC9iGK_VwA2ARo3u3Cgs1Axs
+  lat: 35.184292
+  lng: 136.932182
+- id: tokugawa-art-museum
+  name_en: Tokugawa Art Museum
+  name_local: 徳川美術館
+  category: museum
+  address: 1017 Tokugawa-cho, Higashi-ku, Nagoya
+  tags: [art, edo, owari-tokugawa]
+  notes: Owari Tokugawa family heirlooms — armor, swords, tea utensils, Tale of Genji scrolls. Around 1,400 yen. Day 2 afternoon with Tokugawa-en across the street.
+
+  google_place_id: ChIJp-eMF_1wA2ARC_ohxjLyXbY
+  lat: 35.18387
+  lng: 136.933245
+- id: shirakabe-samurai-district
+  name_en: Shirakabe samurai district
+  name_local: 白壁
+  category: sight
+  address: Shirakabe, Higashi-ku, Nagoya
+  tags: [walking-district, samurai, preserved]
+  notes: Preserved Meiji and Taisho-era samurai-quarter streets of white walls and tile roofs, walkable in around 60 minutes. Slots between Tokugawa-en and Shirakabe Hamamoto / dinner on Day 2.
+
+  google_place_id: ChIJqQkwHC9xA2AR_Y4eVMku55w
+  lat: 35.181144
+  lng: 136.910314
+- id: horikawa-river-walk
+  name_en: Horikawa river walk
+  name_local: 堀川
+  category: sight
+  address: Horikawa, Naka-ku, Nagoya
+  tags: [walking-district, river]
+  notes: Central Nagoya river walk between Nayabashi and Nishikibashi. Day 4 morning bridge between Yanagibashi Market breakfast and the Shikemichi historic district.
+
+  google_place_id: ChIJx7Y7gdB2A2ARRCfI2FqmM3U
+  lat: 35.174495
+  lng: 136.893419
+- id: shikemichi-district
+  name_en: Shikemichi historical district
+  name_local: 四間道
+  category: sight
+  address: Shikemichi, Nishi-ku, Nagoya
+  tags: [walking-district, merchant, preserved]
+  notes: Preserved Edo-era merchant district north of Nagoya Station, narrow streets and black-walled storehouses. Day 4 morning walk after the seafood breakfast, low-key and unhurried.
+
+  google_place_id: ChIJJTJniNp2A2AROm6YeS1I6v4
+  lat: 35.173799
+  lng: 136.892217
+- id: yanagibashi-market
+  name_en: Yanagibashi Market
+  name_local: 柳橋中央市場
+  category: market
+  address: Near Nagoya Station, Nakamura-ku, Nagoya
+  tags: [seafood, wholesale, breakfast]
+  notes: Nagoya's seafood wholesale market with Maguroya Kurogin and other early breakfast counters. Day 4 dawn anchor — raw fish over rice before the city wakes up.
+
+  google_place_id: ChIJO7D5qt52A2ARssqBgiIQo8E
+  lat: 35.169991
+  lng: 136.88804
+- id: osu-kannon
+  name_en: Osu Kannon Temple
+  name_local: 大須観音
+  category: temple
+  address: 2-21-47 Osu, Naka-ku, Nagoya
+  tags: [major-temple, osu]
+  notes: Osu's main temple and the gateway to the Osu shopping arcade. Day 6 morning entrance to the manga-and-vintage shopping crawl; also the host of the monthly antique market.
+
+  google_place_id: ChIJr3HDSzJ3A2AR6Pctdr3J-yc
+  lat: 35.159689
+  lng: 136.899419
+- id: osu-antique-market
+  name_en: Osu antique market
+  name_local: 大須骨董市
+  category: market
+  address: Osu Kannon grounds, Naka-ku, Nagoya
+  tags: [antique, monthly, date-specific, souvenir-source]
+  notes: Monthly antique market held on the 18th and 28th in the Osu Kannon temple grounds. Day 6 lands here only if dates align — a discretionary antique slot in the souvenir budget.
+
+  google_place_id: ChIJZdlrqMxwA2ARpJpFJF45vgg
+  lat: 35.159066
+  lng: 136.902573
+- id: korankei-gorge
+  name_en: Korankei Gorge
+  name_local: 香嵐渓
+  category: sight
+  address: Asuke, Toyota City, Aichi
+  tags: [autumn-foliage, illumination, singular-experience, korankei]
+  notes: Roughly 4,000 maples, including 400-year-old trees, with night illumination 17:00 to 21:00 through late November. THE singular November-only experience and the gravitational center of Day 7.
+
+  google_place_id: ChIJKzjivPSoBGARzBNWLNcE7Sc
+  lat: 35.131473
+  lng: 137.313128
+- id: kojakuji-temple
+  name_en: Kojakuji Temple
+  name_local: 香積寺
+  category: temple
+  address: Asuke, Toyota City, Aichi
+  tags: [korankei, panoramic-view]
+  notes: Hillside temple inside the Korankei gorge with panoramic views over the maple canopy. The Day 7 afternoon climb between Taigetsu Bridge and the village stalls.
+
+  google_place_id: ChIJZY-onfOoBGAR8hy5eyw85OE
+  lat: 35.130898
+  lng: 137.314423
+- id: taigetsu-bridge
+  name_en: Taigetsu Bridge
+  name_local: 待月橋
+  category: sight
+  address: Asuke, Toyota City, Aichi
+  tags: [iconic-bridge, korankei, photo]
+  notes: The iconic red bridge over the Tomoe River, the canonical Korankei photograph. Day 7 morning arrival point and again at night when the bridge is up-lit through the illumination.
+
+  google_place_id: ChIJV9nYvvSoBGARhAcsPSGvSGc
+  lat: 35.131937
+  lng: 137.312915
+- id: hikone-castle
+  name_en: Hikone Castle
+  name_local: 彦根城
+  category: sight
+  address: 1-1 Konkicho, Hikone, Shiga
+  tags: [original-castle, national-treasure]
+  notes: One of only twelve original castle keeps left in Japan and a designated National Treasure. Around 800 yen. Day 8 morning before Omi beef lunch and the Shinano transit east.
+
+  google_place_id: ChIJw9u_XSsrAmARMIwpeAshKu4
+  lat: 35.276452
+  lng: 136.251846
+- id: genkyu-en
+  name_en: Genkyu-en Garden
+  name_local: 玄宮園
+  category: garden
+  address: Adjacent to Hikone Castle, Hikone, Shiga
+  tags: [castle-garden, edo-period]
+  notes: Daimyo's strolling garden built in 1677 directly below Hikone Castle, with the keep framed as borrowed scenery. Tea house service available. Tucked in after the castle climb on Day 8.
+
+  google_place_id: ChIJETPWYywrAmARUWD2FQlyuU4
+  lat: 35.27789
+  lng: 136.253942
+- id: nakasendo-trail
+  name_en: Nakasendo Magome-Tsumago trail
+  name_local: 中山道
+  category: sight
+  address: Kiso Valley, between Magome (Gifu) and Tsumago (Nagano)
+  tags: [preserved-trail, hike, edo, singular-experience]
+  notes: Roughly 8 km of preserved Edo-era post road through cedar forest and farming hamlets, about 3 hours on foot. Day 9 anchor — Magome start, Tsumago finish, baggage forwarded ahead.
+
+- id: waki-honjin-okuya
+  name_en: Waki-honjin Okuya Museum
+  name_local: 脇本陣奥谷
+  category: museum
+  address: Tsumago, Nagiso, Nagano
+  tags: [edo-period, post-town]
+  notes: 1877 reconstruction of Tsumago's secondary inn used by lower-rank daimyo, preserved with original beams and an irori hearth. Around 600 yen. Day 9 afternoon after arriving at Tsumago on foot.
+
+  google_place_id: ChIJe0z0sNe3HGARW6APcHZlrEc
+  lat: 35.577703
+  lng: 137.595393
+- id: tsumago-honjin
+  name_en: Tsumago Honjin Museum
+  name_local: 妻籠本陣
+  category: museum
+  address: Tsumago, Nagiso, Nagano
+  tags: [edo-period, post-town]
+  notes: Reconstructed main inn (honjin) where high-ranking daimyo lodged on the Nakasendo. Around 300 yen. Pairs with Waki-honjin Okuya on Day 9 afternoon.
+
+  google_place_id: ChIJM7uYpeS3HGAR9jZQMTUsvIc
+  lat: 35.577588
+  lng: 137.595667
+- id: otsumago
+  name_en: Otsumago
+  name_local: 大妻籠
+  category: sight
+  address: South of Tsumago, Nagiso, Nagano
+  tags: [preserved-village, post-town, walking]
+  notes: Smaller, quieter preserved post-town settlement about 30 minutes' walk south of Tsumago. Late-afternoon Day 9 detour for emptier streets and zero day-tripper density.
+
+  google_place_id: ChIJM7uYpeS3HGAR9jZQMTUsvIc
+  lat: 35.577588
+  lng: 137.595667
+- id: shinhotaka-ropeway
+  name_en: Shinhotaka Ropeway
+  name_local: 新穂高ロープウェイ
+  category: ropeway
+  address: Shin-Hotaka, Okuhida, Gifu
+  tags: [alpine, double-decker, northern-alps, viewpoint]
+  notes: Japan's only double-decker cable car, climbing from 1,117 m to 2,156 m for a Northern Alps panorama. Around 3,300 yen round trip. Day 11 morning before onsen-hopping the afternoon.
+
+- id: hirayu-falls
+  name_en: Hirayu Falls
+  name_local: 平湯大滝
+  category: sight
+  address: Hirayu Onsen, Okuhida, Gifu
+  tags: [waterfall, optional]
+  notes: 64-metre waterfall about 30 minutes' walk from Hirayu Onsen center. Optional Day 11 afternoon side trip between the ropeway descent and the onsen-hopping rotation.
+
+  google_place_id: ChIJlWzsnQ9JHWARbeDJM-o3ZMk
+  lat: 36.17702
+  lng: 137.559632
+- id: sankodo-pens
+  name_en: Sankodo Sakae
+  category: shop
+  address: Sakae, Naka-ku, Nagoya
+  tags: [stationery, pens, souvenir-source]
+  notes: Pen specialist used for the Tombow Zoom 707 (brother's souvenir) and the Sakura Craft Lab 002 (Patrizio). Slotted into a Sakae afternoon when the route already passes through.
+
+  google_place_id: ChIJFbVzrSl3A2ARG5kOqHxJVsw
+  lat: 35.167287
+  lng: 136.895706
+- id: takashimaya-depachika
+  name_en: Takashimaya Gates Tower depachika
+  category: shop
+  address: Nagoya Station Gates Tower B1F, Nakamura-ku, Nagoya
+  tags: [depachika, premium, ekiben, souvenir-source]
+  notes: Premium department-store food hall in the Gates Tower above Nagoya Station. Source of the Day 8 premium ekiben (Tsukiji Tamura or Nadaman) and several souvenir items including matcha tins, whisky, and Mino-yaki.
+
+  google_place_id: ChIJaxUfTtl2A2ARbs5oPXeaIdM
+  lat: 35.172207
+  lng: 136.882618
+- id: matsuzakaya-depachika
+  name_en: Matsuzakaya Sakae depachika
+  category: shop
+  address: Sakae, Naka-ku, Nagoya
+  tags: [depachika, mino-yaki, souvenir-source]
+  notes: Matsuzakaya's Sakae food hall and adjacent home-goods floor — a Mino-yaki ceramics sourcing stop and an evening pickup for furoshiki and lacquerware on the way back to Anshin Oyado.
+
+  google_place_id: ChIJW1efAc5wA2ARSGMn7SZkzZ8
+  lat: 35.165279
+  lng: 136.907927
+- id: mitsukoshi-sakae
+  name_en: Mitsukoshi Sakae
+  category: shop
+  address: Sakae, Naka-ku, Nagoya
+  tags: [depachika, mino-yaki, oribe, shino, souvenir-source]
+  notes: Mitsukoshi's Sakae store with a strong Mino-yaki selection — Oribe greens and Shino whites in particular. Complements Matsuzakaya for the ceramic souvenir round.
+
+  google_place_id: ChIJn3wLYtFwA2ARFw2jVUMr9Kc
+  lat: 35.168333
+  lng: 136.907685
+- id: mandarake-osu
+  name_en: Mandarake Nagoya
+  category: shop
+  address: Osu, Naka-ku, Nagoya
+  tags: [manga, action-figures, vintage, souvenir-source]
+  notes: Mandarake's Nagoya branch — vintage manga and action figures across multiple floors. Day 6 Osu crawl, source of the two action figures in the souvenir plan.
+
+  google_place_id: ChIJZciPkMxwA2ARBP2oIIBbsDA
+  lat: 35.159991
+  lng: 136.904467
+- id: animate-osu
+  name_en: Animate Osu
+  category: shop
+  address: Osu, Naka-ku, Nagoya
+  tags: [manga, anime]
+  notes: Mainstream manga and anime merchandise — the brand-new-and-clean counterpart to Mandarake's vintage chaos. Quick second stop on the Day 6 Osu round.
+
+- id: komehyo-osu
+  name_en: Komehyo Honkan
+  category: shop
+  address: Osu, Naka-ku, Nagoya
+  tags: [secondhand, vintage, haori, denim, souvenir-source]
+  notes: Seven-floor secondhand flagship; Floor 4 holds vintage clothing including a deep denim and outerwear bench. Source of the vintage haori in the souvenir plan.
+
+- id: unwave-osu
+  name_en: Unwave
+  category: shop
+  address: Osu arcade 2F, Naka-ku, Nagoya
+  tags: [vintage, workwear, denim, levis]
+  notes: Vintage Levi's specialist with military and workwear depth. Day 6 vintage round — discretionary budget against the workwear category, not a guaranteed buy.
+
+  google_place_id: ChIJtbnTW313A2ARpNRK5TfNZL8
+  lat: 35.159113
+  lng: 136.900242
+- id: archaic-osu
+  name_en: Archaic
+  category: shop
+  address: Osu, Naka-ku, Nagoya
+  tags: [vintage, high-end, military, moleskin]
+  notes: Museum-quality vintage from the 1940s onward — French moleskin, US and UK military, deadstock pieces curated tight. Look-don't-touch stop on the Day 6 Osu round.
+
+  google_place_id: ChIJK3dSz8xwA2AR90qbj-lY7RU
+  lat: 35.160335
+  lng: 136.903407
+- id: crout-osu
+  name_en: CROUT
+  category: shop
+  address: Osu (also Sakae location), Naka-ku, Nagoya
+  tags: [vintage, denim]
+  notes: Broader-range vintage shop with a denim-heavy second floor. Rounds out the Day 6 vintage circuit alongside Komehyo, Unwave, and Archaic.
+
+- id: seki-hamono-museum-shop
+  name_en: Seki Hamono Museum knife shops
+  category: shop
+  address: Seki Hamono Museum area, Seki, Gifu
+  tags: [knives, gyuto, petty, souvenir-source]
+  notes: Cluster of knife retailers around the Hamono Museum where the two Seki knives (gyuto + petty) in the souvenir plan are sourced. Day 5 anchor of the Seki day trip.
+
+  google_place_id: ChIJ96RKyzEBA2ARPF_2-xpezso
+  lat: 35.489271
+  lng: 136.874392
+- id: tokoname-pottery-studios
+  name_en: Tokoname pottery studios
+  category: shop
+  address: Pottery Footpath, Tokoname, Aichi
+  tags: [pottery, kyusu, yunomi, souvenir-source]
+  notes: Cluster of working pottery studios and showrooms along Tokoname's Pottery Footpath, including the INAX showrooms. Source of the kyusu teapot, yunomi cups, and Tokoname sake cup in the souvenir plan. Day 3.
+
+  google_place_id: ChIJ_fTz9UuHBGAR9x7ADIKLBrU
+  lat: 34.88753
+  lng: 136.83967
+- id: nagoya-station
+  name_en: Nagoya Station
+  name_local: 名古屋駅
+  category: transit
+  address: Nakamura-ku, Nagoya
+  tags: [hub, shinkansen, jr, meitetsu, subway]
+  notes: Primary transit hub for the trip — Shinkansen, JR Chuo (Shinano), Meitetsu (NGO airport, Tokoname), and the Higashiyama/Sakuradori subway lines. Also the location of the Gates Tower depachika.
+
+  google_place_id: ChIJiYvXlOd2A2ARYxYm-Esg94E
+  lat: 35.170915
+  lng: 136.881537
+- id: sakae-station
+  name_en: Sakae Station
+  name_local: 栄駅
+  category: transit
+  address: Sakae, Naka-ku, Nagoya
+  tags: [hub, subway]
+  notes: Sakae subway hub on the Higashiyama and Meijo lines — the practical front door of the Anshin Oyado base and most evening returns.
+
+  google_place_id: ChIJa56NTNFwA2ARYPQaOzszEus
+  lat: 35.170047
+  lng: 136.908532
+- id: meitetsu-bus-center
+  name_en: Meitetsu Bus Center
+  name_local: 名鉄バスセンター
+  category: transit
+  address: Meitetsu Nagoya Station area, Nakamura-ku, Nagoya
+  tags: [bus, korankei]
+  notes: Highway bus terminal above Meitetsu Nagoya Station. Day 7 departure for the direct Korankei bus during the autumn season.
+
+  google_place_id: ChIJVVVV4t12A2ARuGHeruHGtx8
+  lat: 35.168581
+  lng: 136.884166
+- id: nakatsugawa-station
+  name_en: Nakatsugawa Station
+  name_local: 中津川駅
+  category: transit
+  address: Nakatsugawa, Gifu
+  tags: [shinano, kiso-valley, bus-to-magome]
+  notes: Shinano limited-express endpoint for the Day 8 transit east, with the local bus connection on to Magome for Day 9's hike start.
+
+  google_place_id: ChIJdaBfNEm0HGARBzlqnps4tlU
+  lat: 35.500494
+  lng: 137.503135
+- id: takayama-station
+  name_en: Takayama Station
+  name_local: 高山駅
+  category: transit
+  address: Takayama, Gifu
+  tags: [wide-view-hida, ekiben]
+  notes: Wide View Hida transit point on Day 10 (heading north to Okuhida) and Day 12 (heading south to KIX). Hida-gyu thermal bento sourced here for the Day 12 bento.
+
+  google_place_id: ChIJwQzRXCi7AmARWccmYfpezQQ
+  lat: 36.141076
+  lng: 137.251364
+- id: kansai-airport-kix
+  name_en: Kansai International Airport (KIX)
+  name_local: 関西国際空港
+  category: transit
+  address: Izumisano, Osaka
+  tags: [airport, departure]
+  notes: Day 12 international departure airport for the CPH return leg of the open-jaw flight.
+
+  google_place_id: ChIJ9_rNIxO5AGARiI-QjZ-ncfE
+  lat: 34.431999
+  lng: 135.236602
+- id: nagoya-airport-ngo
+  name_en: Chubu Centrair International Airport (NGO)
+  name_local: 中部国際空港
+  category: transit
+  address: Tokoname, Aichi
+  tags: [airport, arrival]
+  notes: Day 1 international arrival airport — built on a man-made island in Ise Bay, connected to Nagoya Station by the Meitetsu Mu-Sky limited express in around 30 minutes.
+  google_place_id: ChIJzynM7ZN9BGARJQAsbih9mEI
+  lat: 34.857362
+  lng: 136.810756

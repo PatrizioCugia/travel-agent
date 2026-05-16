@@ -20,8 +20,10 @@ from travel_planner.schema import PLACE_CATEGORIES
 
 _yaml_reader = YAML(typ="safe")
 
-# kebab-case slug: lowercase ASCII, alphanumeric segments joined by single hyphens.
-_SLUG_RE = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$")
+# kebab-case slug: lowercase ASCII, alphanumeric segments joined by single
+# hyphens. Leading digits allowed (e.g. `25-ji-made-ice` from the Nagoya v0
+# doc).
+_SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 
 class PlaceModel(BaseModel):

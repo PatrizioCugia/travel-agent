@@ -22,7 +22,8 @@ from travel_planner.parser.trip import split_frontmatter
 _yaml_reader = YAML(typ="safe")
 
 # [[slug]] or [[slug|some alias text]] — captured group is always the slug.
-_slug_ref_pattern = re.compile(r"\[\[([a-z][a-z0-9]*(?:-[a-z0-9]+)*)(?:\|[^\]]*)?\]\]")
+# Slug grammar matches parser/places.py (leading digit allowed).
+_slug_ref_pattern = re.compile(r"\[\[([a-z0-9]+(?:-[a-z0-9]+)*)(?:\|[^\]]*)?\]\]")
 # Matches day-01.md, day-02.md, ..., day-100.md
 _day_filename_pattern = re.compile(r"^day-(\d{2,3})\.md$")
 
