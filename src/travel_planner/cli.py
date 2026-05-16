@@ -79,15 +79,31 @@ def doctor() -> None:
 
 
 @app.command()
-def parse(slug: str) -> None:
-    """Parse a trip's markdown (trip.md + places.yaml) into the DB.
+def parse(
+    slug: str,
+    no_lookup: bool = typer.Option(
+        False,
+        "--no-lookup",
+        help="Skip Places API lookup; just parse what's in the YAML.",
+    ),
+    force: bool = typer.Option(
+        False,
+        "--force",
+        help="Re-lookup every place, overriding existing lat/lng/place_id.",
+    ),
+) -> None:
+    """Parse a trip's markdown into the DB. Fills missing lat/lng via Places API.
 
-    The trip directory must be `trips/<slug>/` under the repo root and the
-    frontmatter's `trip_id` must match `<slug>`.
+    The trip directory must be `trips/<slug>/` and the frontmatter's
+    `trip_id` must match `<slug>`. Without `--no-lookup`, places missing
+    lat/lng/google_place_id are looked up via Places API (New) and written
+    back to places.yaml (formatting + comments preserved).
     """
     from pydantic import ValidationError
 
     from travel_planner.db.sync import sync_trip
+    from travel_planner.maps.cache import PlacesCache
+    from travel_planner.maps.enrich import enrich_places, write_misses_report
     from travel_planner.parser.places import load_places
     from travel_planner.parser.trip import load_trip_frontmatter
 
@@ -96,9 +112,12 @@ def parse(slug: str) -> None:
         typer.secho(f"Trip directory not found: {trip_dir}", fg=typer.colors.RED)
         raise typer.Exit(1)
 
+    places_yaml = trip_dir / "places.yaml"
+    trip_md = trip_dir / "trip.md"
+
     try:
-        trip = load_trip_frontmatter(trip_dir / "trip.md")
-        places = load_places(trip_dir / "places.yaml")
+        trip = load_trip_frontmatter(trip_md)
+        places = load_places(places_yaml)
     except (FileNotFoundError, ValueError, ValidationError) as e:
         typer.secho(f"Parse error: {e}", fg=typer.colors.RED)
         raise typer.Exit(1) from e
@@ -110,6 +129,33 @@ def parse(slug: str) -> None:
         )
         raise typer.Exit(1)
 
+    api_key = os.getenv("GOOGLE_MAPS_API_KEY")
+    if not no_lookup and api_key:
+        cache = PlacesCache(_repo_root() / "data" / "places_cache.json")
+        report = enrich_places(places, places_yaml, cache, api_key=api_key, force=force)
+        if report.needed_lookup:
+            typer.echo(
+                f"  lookup: tried {report.needed_lookup} → "
+                f"{report.new_matches} matched, "
+                f"{report.cache_hits} from cache, "
+                f"{len(report.misses)} missed; "
+                f"{report.updates_applied} yaml update(s)"
+            )
+        if report.misses:
+            misses_path = trip_dir / "output" / "lookup-misses.md"
+            write_misses_report(report.misses, misses_path)
+            typer.secho(
+                f"  misses logged to {misses_path.relative_to(_repo_root())}",
+                fg=typer.colors.YELLOW,
+            )
+        # Re-load with enriched fields
+        places = load_places(places_yaml)
+    elif not no_lookup and not api_key:
+        typer.secho(
+            "  warn: GOOGLE_MAPS_API_KEY not set; skipping lookup",
+            fg=typer.colors.YELLOW,
+        )
+
     with sqlite3.connect(_db_path()) as conn:
         sync_trip(conn, trip, places)
 
@@ -120,8 +166,8 @@ def parse(slug: str) -> None:
     )
     if missing:
         typer.secho(
-            f"  {missing} place(s) missing lat/lng/place_id "
-            "— run `tp parse` again after M3 wires Places API lookup.",
+            f"  {missing} place(s) still missing lat/lng/place_id "
+            "— see output/lookup-misses.md or edit places.yaml.",
             fg=typer.colors.YELLOW,
         )
 

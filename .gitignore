@@ -2,6 +2,7 @@
 .venv/
 .claude/settings.local.json
 /spike.csv
+data/places_cache.json
 data/*.db
 data/*.db-*
 trips/*/output/
