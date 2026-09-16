@@ -1,0 +1,63 @@
+# Reviewed Japanese operator and destination directories for public baths.
+# This is a small, source-linked fallback when OSM lacks facility tags. It is
+# not a scraped nationwide directory and it never replaces facility policy.
+# `day_use_status: listed` means an official schedule is published, not that a
+# bath is definitely open at this moment.
+
+directories:
+  - id: kinosaki-public-baths
+    name: Kinosaki Onsen public baths
+    aliases:
+      - Kinosaki Onsen
+      - 城崎温泉
+      - 城崎温泉外湯
+      - 城崎温泉 外湯
+    authority: 城崎温泉観光協会
+    directory_url: https://kinosaki-spa.gr.jp/about/spa/
+    status_url: https://kinosaki-spa.gr.jp/news/5157/
+    evidence_tier: official_destination
+    reviewed_on: 2026-09-16
+    policy_record_id: kinosaki-public-baths
+    members:
+      - id: jizo-yu
+        name: Jizo-yu
+        name_local: 地蔵湯
+        aliases: [Jizou-yu]
+        day_use_status: listed
+        status_detail: Listed in the association's public-bath schedule; check the current day and hours before visiting.
+      - id: yanagi-yu
+        name: Yanagi-yu
+        name_local: 柳湯
+        aliases: []
+        day_use_status: listed
+        status_detail: Listed in the association's public-bath schedule; check the current day and hours before visiting.
+      - id: ichino-yu
+        name: Ichino-yu
+        name_local: 一の湯
+        aliases: [Ichinoyu]
+        day_use_status: listed
+        status_detail: Listed in the association's public-bath schedule; check the current day and hours before visiting.
+      - id: goshono-yu
+        name: Goshono-yu
+        name_local: 御所の湯
+        aliases: [Goshonoyu]
+        day_use_status: listed
+        status_detail: Listed in the association's public-bath schedule; check the current day and hours before visiting.
+      - id: mandara-yu
+        name: Mandara-yu
+        name_local: まんだら湯
+        aliases: [Mandarayu]
+        day_use_status: listed
+        status_detail: Listed in the association's public-bath schedule; check the current day and hours before visiting.
+      - id: kono-yu
+        name: Kono-yu
+        name_local: 鴻の湯
+        aliases: [Kouno-yu, Konoyu]
+        day_use_status: listed
+        status_detail: Listed in the association's public-bath schedule; check the current day and hours before visiting.
+      - id: satono-yu
+        name: Satono-yu
+        name_local: さとの湯
+        aliases: [Satonoyu]
+        day_use_status: temporarily_closed
+        status_detail: The association says operation has been suspended since 2024-03-31; do not plan a visit without checking for reopening.

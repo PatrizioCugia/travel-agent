@@ -35,6 +35,7 @@ class PlaceView:
     lat: float | None
     lng: float | None
     google_place_id: str | None
+    source_refs: dict[str, str] = field(default_factory=dict)
     tags: list[str] = field(default_factory=list)
     urls: dict[str, str] = field(default_factory=dict)
     notes: str | None = None
@@ -92,7 +93,7 @@ def load_places(conn: sqlite3.Connection, trip_id: str) -> list[PlaceView]:
     rows = conn.execute(
         """
         SELECT id, name_en, name_local, category, address,
-               lat, lng, google_place_id, tags_json, urls_json, notes
+               lat, lng, google_place_id, source_refs_json, tags_json, urls_json, notes
         FROM place WHERE trip_id = ? ORDER BY id
         """,
         (trip_id,),
@@ -109,9 +110,10 @@ def load_places(conn: sqlite3.Connection, trip_id: str) -> list[PlaceView]:
             lat=r[5],
             lng=r[6],
             google_place_id=r[7],
-            tags=json.loads(r[8]) if r[8] else [],
-            urls=json.loads(r[9]) if r[9] else {},
-            notes=r[10],
+            source_refs=json.loads(r[8]) if r[8] else {},
+            tags=json.loads(r[9]) if r[9] else [],
+            urls=json.loads(r[10]) if r[10] else {},
+            notes=r[11],
         )
         places[p.id] = p
 

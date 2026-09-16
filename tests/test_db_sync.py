@@ -148,3 +148,19 @@ def test_sync_without_days_argument(conn: sqlite3.Connection) -> None:
     """Backwards-compatible call: days defaults to empty."""
     sync_trip(conn, _trip(), _places())
     assert conn.execute("SELECT COUNT(*) FROM day").fetchone()[0] == 0
+
+
+def test_sync_writes_my_maps_url_from_frontmatter(conn: sqlite3.Connection) -> None:
+    trip = _trip().model_copy(update={"my_maps_url": "https://www.google.com/maps/d/edit?mid=x"})
+    sync_trip(conn, trip, [])
+    row = conn.execute("SELECT my_maps_url FROM trip").fetchone()
+    assert row == ("https://www.google.com/maps/d/edit?mid=x",)
+
+
+def test_resync_keeps_my_maps_generated_at(conn: sqlite3.Connection) -> None:
+    """No Markdown records when artifacts were generated, so a rebuild must carry it."""
+    sync_trip(conn, _trip(), [])
+    conn.execute("UPDATE trip SET my_maps_generated_at = '2026-09-16T10:00:00' WHERE id = 't1'")
+    sync_trip(conn, _trip(), [])
+    row = conn.execute("SELECT my_maps_generated_at FROM trip").fetchone()
+    assert row == ("2026-09-16T10:00:00",)

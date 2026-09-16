@@ -3,6 +3,7 @@
 .claude/settings.local.json
 /spike.csv
 data/places_cache.json
+data/discovery_candidates.json
 data/*.db
 data/*.db-*
 trips/*/output/
@@ -16,3 +17,6 @@ dist/
 build/
 *.egg-info/
 .DS_Store
+
+# AWS credentials (never commit)
+.aws/

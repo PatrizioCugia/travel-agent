@@ -33,6 +33,9 @@ class TripFrontmatter(BaseModel):
     total_budget_kr: int | None = None
     themes: list[str] = Field(default_factory=list)
     notes_path: str | None = None
+    # Set by `tp map register-url` after the manual My Maps import. Lives here,
+    # not only in SQLite, because every sync rebuilds the trip row.
+    my_maps_url: str | None = None
 
 
 def split_frontmatter(text: str) -> tuple[str, str]:

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Nightly availability watch for travel-planner.
+
+  launchd rather than cron, for one reason: this laptop sleeps, and cron
+  silently skips a job whose time passed while the machine was asleep.
+  launchd runs a missed StartCalendarInterval job on wake. For a watcher whose
+  entire value is catching a ryokan calendar the day it opens, a silently
+  skipped night is the failure that matters. It does not catch up a run missed
+  while the Mac was shut down, and it does not retry a run that fails.
+
+  Paths below are absolute to this checkout; edit them if the repo or uv moves.
+
+  Install:
+    cp ops/com.patrizio.tp-watch.plist ~/Library/LaunchAgents/
+    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.patrizio.tp-watch.plist
+  Check:    launchctl print gui/$(id -u)/com.patrizio.tp-watch
+  Run now:  launchctl kickstart gui/$(id -u)/com.patrizio.tp-watch
+  Remove:   launchctl bootout gui/$(id -u)/com.patrizio.tp-watch
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.patrizio.tp-watch</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/patrizio/.local/bin/uv</string>
+        <string>run</string>
+        <string>python</string>
+        <string>-m</string>
+        <string>travel_planner.cli</string>
+        <string>watch</string>
+        <string>run</string>
+        <string>--quiet</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/patrizio/Desktop/side-projects/travel-agent</string>
+
+    <!-- 08:30 local. Japanese inns publish calendars during the Japanese
+         working day, which has already happened by the time Copenhagen wakes. -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key><integer>8</integer>
+        <key>Minute</key><integer>30</integer>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/patrizio/Desktop/side-projects/travel-agent/data/watch.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/patrizio/Desktop/side-projects/travel-agent/data/watch.log</string>
+
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>
