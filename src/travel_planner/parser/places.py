@@ -37,6 +37,10 @@ class PlaceModel(BaseModel):
     lat: float | None = None
     lng: float | None = None
     google_place_id: str | None = None
+    # Filled by lodging search / shortlist promotion, not by hand — same
+    # contract as google_place_id.
+    rakuten_hotel_no: int | None = None
+    source_refs: dict[str, str] = Field(default_factory=dict)
     tags: list[str] = Field(default_factory=list)
     urls: dict[str, str] = Field(default_factory=dict)
     notes: str | None = None

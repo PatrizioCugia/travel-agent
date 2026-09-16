@@ -7,18 +7,33 @@ the file. PyYAML would not preserve any of this; do not switch.
 
 from __future__ import annotations
 
+import io
 from pathlib import Path
 from typing import Any
 
 from ruamel.yaml import YAML
 
-_yaml_rt = YAML()
-_yaml_rt.preserve_quotes = True
-# `- ` at column 0 (not indented), keys at column 2 — the standard style
-# we author places.yaml in. ruamel's defaults (sequence=4, offset=2) would
-# re-indent `- id:` to column 2 on round-trip; explicit settings avoid that.
-_yaml_rt.indent(mapping=2, sequence=2, offset=0)
-_yaml_rt.width = 4096  # don't auto-wrap long URLs/notes
+from travel_planner.parser.trip import split_frontmatter
+
+
+def round_trip_yaml() -> YAML:
+    """A ruamel instance configured for our places.yaml house style.
+
+    `- ` at column 0 (not indented), keys at column 2 — the style we author
+    places.yaml in. ruamel's defaults (sequence=4, offset=2) would re-indent
+    `- id:` to column 2 on round-trip; explicit settings avoid that.
+
+    Shared with shortlist.py so both files are written identically and a
+    promoted entry doesn't reformat the file it lands in.
+    """
+    y = YAML()
+    y.preserve_quotes = True
+    y.indent(mapping=2, sequence=2, offset=0)
+    y.width = 4096  # don't auto-wrap long URLs/notes
+    return y
+
+
+_yaml_rt = round_trip_yaml()
 
 
 def update_places_yaml(
@@ -51,3 +66,28 @@ def update_places_yaml(
         _yaml_rt.dump(data, f)
 
     return modified
+
+
+def set_frontmatter_field(markdown_path: Path, key: str, value: Any) -> None:
+    """Set one key in a Markdown file's YAML frontmatter, leaving the rest alone.
+
+    Round-trips only the frontmatter block, so its comments and key order
+    survive, and the prose body is written back byte for byte. Frontmatter is
+    authored with lists indented under their key, unlike places.yaml, hence
+    its own indent settings.
+    """
+    text = markdown_path.read_text(encoding="utf-8")
+    block, body = split_frontmatter(text)
+    if not block.strip():
+        raise ValueError(f"{markdown_path} has no frontmatter")
+    yaml = YAML()
+    yaml.preserve_quotes = True
+    yaml.indent(mapping=2, sequence=4, offset=2)
+    yaml.width = 4096
+    data = yaml.load(block)
+    if not isinstance(data, dict):
+        raise ValueError(f"{markdown_path} frontmatter must be a YAML mapping")
+    data[key] = value
+    out = io.StringIO()
+    yaml.dump(data, out)
+    markdown_path.write_text(f"---\n{out.getvalue()}---\n{body}", encoding="utf-8")

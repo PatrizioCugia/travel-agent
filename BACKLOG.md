@@ -1,6 +1,16 @@
 # BACKLOG.md — travel-planner
 
-Deferred ideas, ranked roughly by when they might surface. Phase 1 (the map feature) shipped in M7. Everything here is post-phase-1.
+Deferred ideas, ranked roughly by when they might surface. Phase 1 (the map feature) shipped in M7. Phase 2 (the lodging/food research layer) shipped after it — see the phase-2 notes at the bottom.
+
+## Deferred from phase 2
+
+- **Notification channel.** Watch findings currently sit in `tp watch log` until asked for. Push (Telegram/email/macOS notification) was deliberately deferred — revisit if a calendar opens and closes between two check-ins.
+- **Travelling breaks the watcher.** The Rakuten app is IP-allowlisted to a home ISP lease; the nightly run fails from anywhere else, including Japan. Options: an always-on host, or a broader allowlist entry.
+- **Map visualizer upgrade** (GSI tiles, availability-coloured pins). Explicitly out of phase 2.
+- **`booking_status` as a derived view.** Implemented as tags for now (`booking-needed`), per the phase-1 convention. A view joining `place` to the latest snapshot would let `tp` answer "you said you need to book this, and it is bookable at ¥X" — not yet built.
+- **Area-code search path.** `GetAreaClass` is wired in the client but unused: all searching goes through geocode → lat/lng, which is capped at a 3 km radius. Region-wide searches ("anywhere in Hida") need the area tree.
+- **English names for Rakuten inns are best-effort.** `shortlist_add_lodging` geocodes the Japanese name through Places and takes the English display name if the match is within 2 km. When it misses, the slug falls back to `rakuten-<hotelNo>`. Google's English names also sometimes carry kanji inline (`Kamameshi Shizuka Kouen-ten志津香`), which lands in `name_en` and wants hand-editing.
+- **`tp watch log` piped to `head` still marks everything seen.** Use `--keep-unseen` when skimming.
 
 ## Immediate carry-overs from M6
 
@@ -66,3 +76,28 @@ Deferred ideas, ranked roughly by when they might surface. Phase 1 (the map feat
 - **73 places, 12 days, 77 day-place links** synced from markdown to SQLite for Nagoya 2026.
 - **56/73 places (77%)** matched at high confidence with correct region on first live lookup; 17 went to `lookup-misses.md` for manual review.
 - **4 parallel Opus agents** in M6 produced the trip content in ~3 minutes wall-clock.
+
+
+## Phase 2 post-mortem
+
+### What worked
+
+- **Reference modules as a starting point, read critically.** `rakuten.py` arrived with nine hard-won API gotchas, every one of which held up against the live docs and live traffic. Keeping its substance and rewriting only what was demonstrably wrong was the right call — the alternative (rewrite from scratch) would have re-lost a day to `accessKey` and `datumType`.
+- **Answering the durability question structurally.** Two database files ended the argument: `tp parse` cascade-deletes a trip, so observational data in the planning DB is either destroyed or lying about its foreign key. No rule to remember.
+- **Date windows as a first-class concept.** Dates weren't locked, so `--window A..B --nights N` expands to one target per candidate check-in. Batching by date meant 31 targets cost 18 API calls, not 31.
+- **Using the thing before declaring it done.** Three real defects only appeared in live use: every price parsed as `None`, reserve URLs came back as 250-character affiliate redirects, and `find_food` didn't print the place id its own shortlist tool needs.
+
+### What was harder than expected
+
+- **The reference parser dropped every price.** `roomInfo` arrives as ONE flat list — `[{roomBasicInfo}, {dailyCharge}]` — and the original code zipped each element against itself, so the charge block never met its room block. Caught only because a live search showed "price n/a" on every row. Unit tests written against an assumed shape would have passed happily.
+- **`mcp` 2.0 moved the API.** `mcp.server.fastmcp.FastMCP` is gone; it is `mcp.server.MCPServer` now, with the same decorator shape. Every tutorial and the reference module predate it.
+- **Importing `mcp` leaked API keys into logs.** It installs a logging handler that makes httpx's INFO request logging visible, and Rakuten authenticates by query string — so both credentials printed in full, and would have been written to `data/watch.log` on every scheduled run. Fixed in `logging_setup.py`. The keys printed during development are compromised and need regenerating at https://webservice.rakuten.co.jp/app/list — the IP allowlist limits the damage but does not remove it.
+- **Google Places `locationBias` is a hint, not a boundary.** A restaurant search near Tōdai-ji cheerfully returned a place 30 km away in Osaka. `searchText` only supports rectangular `locationRestriction`, so results are distance-gated client-side at twice the requested radius.
+- **Rakuten's IP allowlist on API/backend apps** is not in any of the tutorials, and pins the whole thing to a dynamic residential address.
+
+### Numbers
+
+- **13 MCP tools**, 5 CLI command groups, 2 databases.
+- **151 tests** (100 carried from phase 1, 51 new), ruff + `mypy --strict` clean.
+- **31 watch targets** across the Omizutori fortnight polled in 29 s (18 API calls at the 1 QPS floor).
+- **3 defects found by live use** that no unit test written from the docs would have caught.

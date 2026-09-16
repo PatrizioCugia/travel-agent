@@ -1,0 +1,35 @@
+# Reviewed bathing-access evidence. Records describe a facility or an explicit
+# policy scope; they never infer a tattoo rule from a nearby onsen or review.
+# Refresh reviewed_on whenever the operator or destination authority changes
+# its policy. Unknown is a valid state and must never be rendered as refusal.
+
+records:
+  - id: kinosaki-public-baths
+    name: Kinosaki Onsen public bathhouses
+    aliases:
+      - Kinosaki Onsen
+      - 城崎温泉
+      - Satono-yu
+      - さとの湯
+      - Jizo-yu
+      - 地蔵湯
+      - Yanagi-yu
+      - 柳湯
+      - Ichino-yu
+      - 一の湯
+      - Goshono-yu
+      - 御所の湯
+      - Mandara-yu
+      - まんだら湯
+      - Kono-yu
+      - 鴻の湯
+    kind: public_onsen_area
+    applies_to: Seven named public bathhouses in Kinosaki Onsen; not baths inside accommodations.
+    tattoo_status: allowed
+    tattoo_detail: Tattoos of all sizes are accepted in the seven public baths; no cover is required.
+    day_use: true
+    private_bath: varies
+    access_url: https://visitkinosaki.com/plan/visitor-info/guides/tattoos-in-kinosaki-onsen/
+    evidence_tier: official_destination
+    reviewed_on: 2026-09-16
+    notes: Individual public-bath opening hours and closures vary. Accommodation baths have their own policies.

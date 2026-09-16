@@ -82,7 +82,8 @@ uv run tp map generate nagoya
 
 # Copy the map URL from the browser's address bar (looks like
 # https://www.google.com/maps/d/edit?mid=...&...)
-# and register it:
+# and register it (written to trip.md's frontmatter as my_maps_url, so it
+# survives every re-parse):
 uv run tp map register-url nagoya 'https://www.google.com/maps/d/edit?mid=YOUR_MAP_ID'
 
 # Open the map any time
@@ -262,10 +263,193 @@ These are interesting; none of them are phase 1. See `BACKLOG.md`.
 
 ---
 
+## Phase 2 — finding lodging and food (Rakuten + Places, over MCP)
+
+Phase 1 turns markdown into maps. Phase 2 is the other direction: research the
+places in the first place, from inside Claude Code, and end every answer at a
+URL you book yourself. Nothing here books, holds, or writes to any reservation
+system — no Japanese OTA exposes a public write path, and we do not pretend
+otherwise.
+
+### One-time setup
+
+```bash
+# 1. Rakuten Web Service app (free, instant, no review)
+#    https://webservice.rakuten.co.jp/app/list → +アプリID発行
+#    - Application type: API/backend  (NOT "web" — requests come from a
+#      Python process, not a browser page)
+#    - Allowed IPs: your current public IP, one per line
+#    - API scopes: Rakuten Travel API only
+#    Copy applicationId and accessKey into .env:
+#      RAKUTEN_APP_ID=...
+#      RAKUTEN_ACCESS_KEY=...
+#      JPY_PER_DKK=24.8      # display only, hand-maintained
+
+# 2. Verify — checks both keys and prints your public IP for the allowlist
+uv run tp doctor
+```
+
+**The IP allowlist is the thing that will break.** The app is pinned to your
+public IP, which on a residential ISP lease changes without warning. It also
+breaks the moment a VPN is on, and while you are travelling — including in
+Japan. When Rakuten starts refusing calls, `tp doctor` prints the current IP;
+paste it into the app settings and you are working again.
+
+### Searching
+
+```bash
+# Lodging near any place Google Places understands
+uv run tp lodging search "Kinosaki Onsen" --checkin 2027-03-05 --nights 2 --dinner
+uv run tp lodging search "Naramachi Nara" --checkin 2027-03-11 --nights 1 --onsen
+
+uv run tp lodging resolve "城崎温泉 東山荘"    # name → hotelNo (Japanese works better)
+uv run tp lodging show 5719                    # check-in times, bath, facilities
+
+# Restaurants — Google Places, with a Tabelog search link per result
+uv run tp food search "Todai-ji Nara" --dish kamameshi
+```
+
+Prices show as yen with an approximate kroner figure, and cover **the first
+night only** — Rakuten's `dailyCharge` does not sum a multi-night stay. Results
+carrying a `(first night)` marker are telling you exactly that.
+
+Keep the Japanese property name, address, and local terms as the canonical
+identity. Query Rakuten, Jalan where an existing sanctioned key is available,
+and an operator's Japanese site before relying on an English-language
+aggregator. English results are useful navigation aids, but do not represent
+the whole domestic market.
+
+### Booking routes after a Rakuten empty result
+
+Use `check_availability` for the exact dates first. If Rakuten returns no
+plan, call `booking_route` with the same hotel number. It looks up reviewed
+alternative IDs and official booking or contact paths in
+`data/booking_routes.yaml`; it does not claim the inn is full and it never
+submits a booking or an enquiry.
+
+Jalan is recorded when a matching Jalan property ID is verified. Its legacy Web
+Service can return Jalan-channel stock and a date-specific booking redirect,
+but Recruit no longer issues new API keys. Treat it as an optional second API
+only if a sanctioned legacy key already exists; otherwise use the returned
+Jalan booking page by hand. Its stock is not the inn's total remaining rooms.
+
+### Onsen, sento, and tattoo access
+
+`discover_nearby` first checks a reviewed Japanese destination/operator
+directory when its onsen query exactly matches a covered town or bath (for
+example, `城崎温泉`). This fills named public-bath gaps in OpenStreetMap without
+scraping a directory. Other locations fall back to OSM candidates. A directory
+entry says that an official day-use schedule is published; it is not a
+real-time open signal.
+
+Neither discovery source can establish tattoo, day-use, or private-bath policy
+on its own. Use `bathing_access` with the exact Japanese bath name to retrieve
+only reviewed, source-linked evidence from `data/bathing_access.yaml`. The
+current source contract and extension rules are in
+[`BATHING_DISCOVERY_SCOPE.md`](BATHING_DISCOVERY_SCOPE.md).
+
+The hierarchy is deliberate: a current operator statement is authoritative;
+an official destination or municipality can confirm a shared public-bath rule;
+Tattoo Navi and Tattoo Japan are useful discovery leads. A policy missing from
+the registry is `unknown`, not a rejection. Keep public baths and the baths
+inside a ryokan separate: a town-wide public-bath rule does not automatically
+cover accommodation baths.
+
+### Shortlist → trip
+
+Search results are noise until you keep one. Candidates land in
+`trips/<slug>/shortlist.yaml`, which uses the same entry schema as
+`places.yaml` plus a `_found` provenance block, so promotion is a move rather
+than a retype:
+
+```bash
+uv run tp shortlist list japan-2027-02
+uv run tp shortlist promote japan-2027-02 higasiyama-sou   # → places.yaml
+uv run tp parse japan-2027-02                              # picks it up, maps it
+uv run tp shortlist remove japan-2027-02 <id>
+```
+
+### Watching for calendars that have not opened
+
+Small ryokan open their booking calendars three to six months out, on no
+published schedule and with no notification. Rakuten returns the **same** empty
+answer for a sold-out stay, an unpublished calendar, and a property that has
+not supplied bookable plan inventory to Rakuten. An empty result is never
+reported as proof a place is full.
+
+```bash
+# Exact dates
+uv run tp watch add 5719 --label "Higashiyamaso 東山荘" \
+    --checkin 2027-03-05 --checkout 2027-03-07 --trip japan-2027-02
+
+# Or a window, while dates are still moving — one watch per candidate check-in
+uv run tp watch add 7850 --label "Nara Hakushikaso" \
+    --window 2027-03-01..2027-03-14 --nights 1 --trip japan-2027-02
+
+uv run tp watch list --trip japan-2027-02
+uv run tp watch run          # poll once; this is what the schedule runs
+uv run tp watch log          # what the scheduled runs found since you last looked
+uv run tp watch remove 12    # deactivate, keeping its history
+```
+
+Watches batch by date: a dozen inns on the same night cost one API call, not
+twelve. Reported transitions are `opened`, `closed`, `new_plan` and
+`price_drop`; `opened` is the one that matters and it deliberately subsumes the
+others, so an inn opening its calendar is one line, not fifteen.
+
+### Running it nightly
+
+```bash
+cp ops/com.patrizio.tp-watch.plist ~/Library/LaunchAgents/
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.patrizio.tp-watch.plist
+```
+
+launchd rather than cron, for one reason: this laptop sleeps, and cron silently
+skips a job whose time passed while the machine was asleep. launchd runs the
+missed job on wake. For a watcher whose whole value is catching a calendar the
+day it opens, a silently skipped night is the failure that matters. It does not
+catch up a night the Mac spent shut down. One failed date batch does not stop the
+others; the run is recorded as incomplete and exits non-zero. Output goes to
+`data/watch.log`; findings accumulate in `tp watch log`.
+
+### Using it from Claude Code
+
+`.mcp.json` registers the MCP server for this project, which is the normal
+interface: `trip_overview` and `validate_trip` read the canonical Markdown;
+lodging/food/OSM tools discover candidates; shortlist tools retain and promote
+decisions; `sync_trip` and `generate_trip_map` rebuild derived state; watches
+hold availability history. Claude can chain these capabilities in one turn.
+They return compact text, never raw JSON; Rakuten payloads are enormous and
+worthless in context.
+
+The server reads `.env` itself, so no secrets live in `.mcp.json`.
+
+`.claude/skills/japan-lodging/SKILL.md` is the taste layer on top: half-board
+minshuku in the countryside, low-friction hotels in cities, one singular
+experience per trip, no food redundancy. The tools stay neutral so you can
+always ask for the boring option.
+
+### Two databases, and why
+
+- `data/travel_planner.db` — the phase-1 index. Regenerable; `tp parse` deletes
+  and rebuilds a trip in it.
+- `data/observations.db` — watch targets, availability history, change log.
+  **Never** touched by `tp parse`.
+
+The split is structural rather than a rule to remember: `tp parse` deletes a
+trip and cascades to its children, so any snapshot table with a real `trip_id`
+foreign key would be destroyed on every parse — taking the diff baseline, and
+with it the entire point of the watcher. Plan state is disposable and
+git-versioned through markdown; world state is observed once and cannot be
+recovered.
+
+
 ## Files of interest
 
 - `CLAUDE.md` — project conventions (read at the start of every Claude Code session).
 - `PLAN.md` — phase-1 design plan, six-step shape.
+- `PLAN-PHASE2.md` — phase-2 design plan: lodging/food research layer.
+- `PHASE2_KICKOFF.md` — the brief phase 2 was built from.
 - `M1-findings.md` — research output that drove M3 + M5 design.
 - `BACKLOG.md` — deferred work + phase-1 post-mortem.
 - `nagoya_2026_v0_source_of_truth.md` — the input doc M6 migrated from.

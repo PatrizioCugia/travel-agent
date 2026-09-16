@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "tp": {
+      "command": "uv",
+      "args": ["run", "python", "-m", "travel_planner.mcp_server"]
+    }
+  }
+}

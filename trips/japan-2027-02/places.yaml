@@ -1,0 +1,15 @@
+# Japan February–March 2027 — places (canonical list)
+#
+# Structured source of truth for this trip. Candidates still being considered
+# live in shortlist.yaml until promoted.
+
+- id: todaiji-nigatsudo
+  name_en: Todai-ji Nigatsudo
+  name_local: 東大寺二月堂
+  category: temple
+  address: 406-1 Zoshicho, Nara
+  tags: [omizutori, singular-experience, evening, free]
+  notes: |
+    Site of Omizutori (Shuni-e), 1–14 March. Otaimatsu torch ceremony 19:00
+    nightly; 12 March is the big night at 19:30, 14 March starts 18:30. Free,
+    no ticket, but the approach fills early — the fixed point of this trip.

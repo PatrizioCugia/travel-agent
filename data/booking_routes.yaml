@@ -1,0 +1,194 @@
+# Verified alternate booking and contact paths for inns researched through the
+# planner. This file deliberately stores routes and stable provider IDs, never
+# a claim that a room is available. Refresh `verified_on` when a route changes.
+#
+# `jalan_legacy_api` needs a pre-existing Jalan Web Service key: Recruit has
+# closed new registrations. It can return Jalan channel stock and a redirect,
+# but cannot make a booking or contact an inn.
+
+routes:
+  - rakuten_hotel_no: 105973
+    name: Saemon-in
+    verified_on: 2026-09-16
+    channels: []
+
+  - rakuten_hotel_no: 187093
+    name: Muryoko-in
+    verified_on: 2026-09-16
+    channels:
+      - provider: official_direct
+        access: contact
+        booking_url: https://muryokoin.jp/?page_id=287
+        notes: Direct phone, fax, or enquiry-form booking.
+
+  - rakuten_hotel_no: 183934
+    name: Ryusen-in
+    verified_on: 2026-09-16
+    channels:
+      - provider: koyasan_shukubo_association
+        access: booking_request
+        booking_url: https://koyasan-shukubo.net/en/
+        notes: The association accepts advance reservation requests for this temple stay.
+
+  - rakuten_hotel_no: 184602
+    name: Hojo-in
+    verified_on: 2026-09-16
+    channels:
+      - provider: koyasan_shukubo_association
+        access: booking_request
+        booking_url: https://koyasan-shukubo.net/provider/plans?providerId=22&r=1&roomUsage=020000000&un=on&unguest=on
+        notes: Association plan page; request booking where an immediate plan is absent.
+
+  - rakuten_hotel_no: 8108
+    name: Fukuchi-in
+    verified_on: 2026-09-16
+    channels:
+      - provider: official_direct
+        access: public_booking_page
+        booking_url: https://www.fukuchiin.com/reservation
+        notes: Official reservation page and direct contact.
+
+  - rakuten_hotel_no: 8766
+    name: Tsuchiya Ryokan
+    verified_on: 2026-09-16
+    channels:
+      - provider: jalan
+        access: jalan_legacy_api
+        external_id: "312156"
+        booking_url: https://www.jalan.net/yad312156/
+        notes: Jalan property page with online availability and booking.
+
+  - rakuten_hotel_no: 151275
+    name: Yamashiroya Ryokan
+    verified_on: 2026-09-16
+    channels:
+      - provider: jalan
+        access: jalan_legacy_api
+        external_id: "320232"
+        booking_url: https://www.jalan.net/yad320232/
+        notes: Jalan property page; also represented in the Kinosaki association booking site.
+
+  - rakuten_hotel_no: 41857
+    name: Mitsuwa Ryokan
+    verified_on: 2026-09-16
+    channels: []
+
+  - rakuten_hotel_no: 79381
+    name: Yoshiharu Ryokan
+    verified_on: 2026-09-16
+    channels:
+      - provider: official_direct
+        access: public_booking_page
+        booking_url: https://kinosaki-yoshiharu.com/
+        notes: Japanese operator site with a reservation form; the inn says this direct route is its lowest price.
+      - provider: jalan
+        access: jalan_legacy_api
+        external_id: "322386"
+        booking_url: https://www.jalan.net/yad322386/
+        notes: Japanese Jalan property page with online availability and booking.
+
+  - rakuten_hotel_no: 140962
+    name: Kasugaya Ryokan
+    verified_on: 2026-09-16
+    channels:
+      - provider: jalan
+        access: jalan_legacy_api
+        external_id: "396670"
+        booking_url: https://www.jalan.net/yad396670/
+        notes: Jalan property page and official direct booking page.
+
+  - rakuten_hotel_no: 149148
+    name: Kumano Kodo no Yado Reimei
+    verified_on: 2026-09-16
+    channels:
+      - provider: official_contact
+        access: contact
+        contact: "+81-735-42-0165"
+        booking_url: https://www.hongu.jp/stay/other/
+        notes: Three-room inn listed by the Kumano Hongu tourism association; call to request a stay.
+
+  - rakuten_hotel_no: 14567
+    name: Kawayu Onsen Minshuku Omuraya
+    verified_on: 2026-09-16
+    channels: []
+
+  - rakuten_hotel_no: 153491
+    name: Onsen Minshuku Kosakaya Motokan
+    verified_on: 2026-09-16
+    channels: []
+
+  - rakuten_hotel_no: 44984
+    name: Minshuku Katsuuraso
+    verified_on: 2026-09-16
+    channels:
+      - provider: official_contact
+        access: contact
+        contact: "+81-735-52-1059"
+        booking_url: https://www.town.nachikatsuura.wakayama.jp/info/1138
+        notes: Verified municipal contact listing; no official public booking API identified.
+      - provider: booking_com
+        access: public_booking_page
+        booking_url: https://www.booking.com/hotel/jp/min-su-katuurazhuang.html
+        notes: Public OTA booking page; availability is Booking.com channel inventory only.
+
+  - rakuten_hotel_no: 147963
+    name: Minshuku Kuraya
+    verified_on: 2026-09-16
+    channels:
+      - provider: jalan
+        access: jalan_legacy_api
+        external_id: "380256"
+        booking_url: https://www.jalan.net/yad380256/
+        notes: Jalan property page; the official site embeds a booking engine.
+
+  - rakuten_hotel_no: 187318
+    name: Ine no Funaya Miyabi Bettei
+    verified_on: 2026-09-16
+    channels:
+      - provider: jalan
+        access: jalan_legacy_api
+        external_id: "351018"
+        booking_url: https://www.jalan.net/yad351018/
+        notes: Jalan property page with the same inn identity.
+      - provider: apa_partner
+        access: public_booking_page
+        booking_url: https://www.apahotel.com/hotel/partners/kansai/kyoto/inenofunaya_miyabi_bettei/calendar/
+        notes: Public partner calendar; no published API found.
+
+  - rakuten_hotel_no: 177984
+    name: Ine no Funaya Miyabi
+    verified_on: 2026-09-16
+    channels:
+      - provider: jalan
+        access: jalan_legacy_api
+        external_id: "300344"
+        booking_url: https://www.jalan.net/yad300344/
+        notes: Jalan property page; its official operator directs new reservations online.
+
+  - rakuten_hotel_no: 188068
+    name: Ine Ebisuya Chitose
+    verified_on: 2026-09-16
+    channels:
+      - provider: jalan
+        access: jalan_legacy_api
+        external_id: "386214"
+        booking_url: https://www.jalan.net/yad386214/
+        notes: Jalan property page; the official site uses Jalan Home Page Direct.
+
+  - rakuten_hotel_no: 184241
+    name: Funaya no Yado Wako
+    verified_on: 2026-09-16
+    channels: []
+
+  - rakuten_hotel_no: 195801
+    name: Funaya Sakasu
+    verified_on: 2026-09-16
+    channels:
+      - provider: vacation_go
+        access: public_booking_page
+        booking_url: https://www.ine-kankou.jp/inn/funaya-sakasu
+        notes: The Ine tourism association routes rates and booking to VacationGo.
+      - provider: booking_com
+        access: public_booking_page
+        booking_url: https://www.booking.com/hotel/jp/zhou-wu-rong-funaya-sakasu.html
+        notes: Public OTA booking page; availability is Booking.com channel inventory only.

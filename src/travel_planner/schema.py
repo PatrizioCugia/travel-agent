@@ -55,6 +55,10 @@ class Place:
     lat: float | None = None
     lng: float | None = None
     google_place_id: str | None = None
+    rakuten_hotel_no: int | None = None
+    # Stable identifiers from open-data providers, retained so a place can be
+    # refreshed or traced to its source after shortlist promotion.
+    source_refs: dict[str, str] = field(default_factory=dict)
     tags: list[str] = field(default_factory=list)
     urls: dict[str, str] = field(default_factory=dict)
     notes: str | None = None
@@ -104,6 +108,8 @@ CREATE TABLE IF NOT EXISTS place (
     lat REAL,
     lng REAL,
     google_place_id TEXT,
+    rakuten_hotel_no INTEGER,
+    source_refs_json TEXT NOT NULL DEFAULT '{}',
     tags_json TEXT NOT NULL DEFAULT '[]',
     urls_json TEXT NOT NULL DEFAULT '{}',
     notes TEXT,

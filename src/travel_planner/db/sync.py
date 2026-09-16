@@ -14,6 +14,21 @@ from travel_planner.parser.places import PlaceModel
 from travel_planner.parser.trip import TripFrontmatter
 from travel_planner.schema import SCHEMA_DDL
 
+# Columns added after a DB already existed. CREATE TABLE IF NOT EXISTS won't
+# add them, and the DB is regenerable but not worth making anyone delete by
+# hand. Idempotent: adds only what is missing.
+_LATER_COLUMNS: list[tuple[str, str, str]] = [
+    ("place", "rakuten_hotel_no", "INTEGER"),
+    ("place", "source_refs_json", "TEXT NOT NULL DEFAULT '{}'"),
+]
+
+
+def _add_missing_columns(cur: sqlite3.Cursor) -> None:
+    for table, column, decl in _LATER_COLUMNS:
+        existing = {row[1] for row in cur.execute(f"PRAGMA table_info({table})")}
+        if column not in existing:
+            cur.execute(f"ALTER TABLE {table} ADD COLUMN {column} {decl}")
+
 
 def sync_trip(
     conn: sqlite3.Connection,
@@ -32,15 +47,21 @@ def sync_trip(
     # Bootstrap schema if needed — first-run users shouldn't have to run
     # `tp doctor` before `tp parse`. DDL is idempotent (CREATE IF NOT EXISTS).
     cur.executescript(SCHEMA_DDL)
+    _add_missing_columns(cur)
     cur.execute("PRAGMA foreign_keys = ON")
+    # my_maps_generated_at records when artifacts were last written, which no
+    # Markdown holds; carry it across the rebuild instead of wiping it.
+    previous = cur.execute(
+        "SELECT my_maps_generated_at FROM trip WHERE id = ?", (trip.trip_id,)
+    ).fetchone()
     cur.execute("DELETE FROM trip WHERE id = ?", (trip.trip_id,))
 
     cur.execute(
         """
         INSERT INTO trip
             (id, name, start_date, end_date, total_budget_kr,
-             themes_json, notes_path)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+             themes_json, notes_path, my_maps_url, my_maps_generated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         (
             trip.trip_id,
@@ -50,6 +71,8 @@ def sync_trip(
             trip.total_budget_kr,
             json.dumps(trip.themes),
             trip.notes_path,
+            trip.my_maps_url,
+            previous[0] if previous else None,
         ),
     )
 
@@ -57,8 +80,9 @@ def sync_trip(
         """
         INSERT INTO place
             (id, trip_id, name_en, name_local, category, address,
-             lat, lng, google_place_id, tags_json, urls_json, notes)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             lat, lng, google_place_id, rakuten_hotel_no, source_refs_json,
+             tags_json, urls_json, notes)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         [
             (
@@ -71,6 +95,8 @@ def sync_trip(
                 p.lat,
                 p.lng,
                 p.google_place_id,
+                p.rakuten_hotel_no,
+                json.dumps(p.source_refs),
                 json.dumps(p.tags),
                 json.dumps(p.urls),
                 p.notes,

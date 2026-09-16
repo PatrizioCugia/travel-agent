@@ -1,0 +1,43 @@
+# Candidates found by search, not yet part of the trip.
+# `tp shortlist promote <trip> <id>` moves an entry into places.yaml.
+# Entry schema matches places.yaml, plus a `_found` provenance block.
+- id: higasiyama-sou
+  name_en: Higasiyama sou
+  name_local: 城崎温泉　東山荘（ひがしやまそう）
+  category: accommodation
+  address: 兵庫県豊岡市城崎町湯島835
+  rakuten_hotel_no: 5719
+  tags:
+  - ryokan
+  - onsen
+  - half-board
+  - crab-season
+  google_place_id: ChIJW89CFSXI_18RSdcE-InPT9s
+  lat: 35.626971999999995
+  lng: 134.81439810000003
+  notes: 風そよぐ★2湯のプライベート貸切風呂が人気宿★駅4分・コンビニ1分の場所・外湯めぐりチケット付♪
+  _found:
+    source: rakuten
+    at: '2026-08-22'
+    query: hotelNo 5719
+    review: 4.19 (491)
+    seen_price_yen: 41580
+    url: https://travel.rakuten.co.jp/HOTEL/5719/5719.html
+- id: kamameshi-shizuka-kouen-ten
+  name_en: Kamameshi Shizuka Kouen-ten志津香
+  category: restaurant
+  address: 59-11 Noboriōjichō, Nara, 630-8213
+  tags:
+  - kamameshi
+  - near-todaiji
+  name_local: 志津香 公園店
+  google_place_id: ChIJfxW-0Y85AWARgYpZZjfh330
+  lat: 34.6843453
+  lng: 135.8369395
+  notes: Kamameshi in a clay pot, five minutes from Nigatsudo. Closed Tuesdays.
+  _found:
+    source: google-places
+    at: '2026-08-22'
+    query: places/ChIJfxW-0Y85AWARgYpZZjfh330
+    review: 4.1 (1860)
+    url: https://maps.google.com/?cid=9070215802604063361&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA
