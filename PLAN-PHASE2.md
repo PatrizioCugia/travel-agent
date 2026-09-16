@@ -192,7 +192,7 @@ default. Live smoke test passed against the real API. Substance stays. Defects:
    heartbeat row, which also makes the history readable.
 
 Additionally, from live setup: **the Rakuten app is IP-allowlisted** to a dynamic
-Stofa residential address. When it rotates, calls fail. `tp doctor` will report the
+residential ISP address. When it rotates, calls fail. `tp doctor` will report the
 current public IP so a mystery rejection is a one-command diagnosis, and the client
 will name the allowlist in its error rather than echoing Rakuten's bare body.
 
